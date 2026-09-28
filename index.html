@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AI Daily</title>
+  <meta name="description" content="Every AI story that matters, tiny to huge, in one place — updated daily.">
+  <meta name="theme-color" content="#0b0d12">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Apply saved theme before paint to avoid a flash.
+    try { var t = localStorage.getItem('aidaily-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./" aria-label="Home">
+        <img src="icons/icon.svg" alt="" width="30" height="30">
+        <span class="brand-name" data-app-name>AI Daily</span>
+      </a>
+      <div class="datenav" role="group" aria-label="Browse editions">
+        <button class="icon-btn" id="prevBtn" aria-label="Previous day" title="Previous day">&#8249;</button>
+        <select id="dateSelect" aria-label="Choose edition date"></select>
+        <button class="icon-btn" id="nextBtn" aria-label="Next day" title="Next day">&#8250;</button>
+      </div>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle theme">
+        <span class="theme-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="editionTitle">
+      <p class="eyebrow" id="editionDate">&nbsp;</p>
+      <h1 id="editionTitle">Today in 60 seconds</h1>
+      <ul class="highlights" id="highlights"><li class="skeleton-line"></li><li class="skeleton-line"></li><li class="skeleton-line"></li></ul>
+      <p class="stats" id="stats"></p>
+      <p class="updated" id="updatedAt"></p>
+    </section>
+    <div class="stale-banner" id="staleBanner" role="status" hidden></div>
+
+    <section class="controls" aria-label="Filters">
+      <div class="search-row">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.06l4.24 4.24-1.4 1.4-4.24-4.24A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></svg>
+          <input id="searchInput" type="search" placeholder="Search headlines, companies, tags…" autocomplete="off" aria-label="Search stories">
+        </label>
+      </div>
+      <div class="toggle-row">
+        <button class="toggle" id="majorToggle" aria-pressed="false"><span class="dot major"></span>Major only</button>
+        <button class="toggle" id="videoToggle" aria-pressed="false"><span class="play-mini">&#9654;</span>Videos only</button>
+        <button class="toggle ghost" id="resetBtn" hidden>Reset</button>
+      </div>
+      <div class="chips" id="chips" role="toolbar" aria-label="Filter by category"></div>
+    </section>
+
+    <section aria-live="polite">
+      <p class="result-count" id="resultCount"></p>
+      <div class="feed" id="feed"></div>
+      <div class="empty" id="empty" hidden>
+        <p>No stories match those filters.</p>
+        <button class="toggle" id="emptyReset">Clear filters</button>
+      </div>
+      <div class="error" id="error" hidden></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><span data-app-name>AI Daily</span> · Every story links to its original source. Videos are only attached when verified.</p>
+    <p class="muted" id="generatedAt"></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

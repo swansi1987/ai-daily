@@ -1,0 +1,649 @@
+{
+  "date": "2026-09-28",
+  "generated_at": "2026-09-28T11:39:35+05:30",
+  "highlights": [
+    "Anthropic’s Dario Amodei gets the SNL treatment",
+    "Sources: China's government asked Alibaba, ByteDance, and others to report on their plans to buy Nvidia RTX Pro 5500, saying it intends…",
+    "Australia Senate Requests OpenAI, Anthropic CEOs Face AI Inquiry",
+    "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief"
+  ],
+  "items": [
+    {
+      "id": "anthropics-dario-amodei-gets-the-snl-treatment",
+      "headline": "Anthropic’s Dario Amodei gets the SNL treatment",
+      "summary": "\"AI is the devil and I its maker.\"",
+      "category": "Other",
+      "importance": "Major",
+      "source_name": "TechCrunch",
+      "source_url": "https://techcrunch.com/2026/09/27/anthropics-dario-amodei-gets-the-snl-treatment/",
+      "published_at": "2026-09-27T16:30:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic"
+      ]
+    },
+    {
+      "id": "as-a-i-makes-law-firms-more-efficient-clients-ask-where-s-my",
+      "headline": "As A.I. makes law firms more efficient, clients ask: 'Where's my discount?'",
+      "summary": "",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/26/business/dealbook/ai-law-discount-billable-hour.html",
+      "published_at": "2026-09-28T01:30:17Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "sources-china-s-government-asked-alibaba-bytedance-and-others",
+      "headline": "Sources: China's government asked Alibaba, ByteDance, and others to report on their plans to buy Nvidia RTX Pro 5500, saying it intends to approve the purchases",
+      "summary": "China’s government has signaled it could allow some domestic companies to buy a new Nvidia chip built for high-end professional computers, according to two people familiar with the matter, as the country’s AI firms strain for enough computing power to run their chatbots and agents. The Ministry ...",
+      "category": "Policy & safety",
+      "importance": "Major",
+      "source_name": "The Information",
+      "source_url": "https://www.theinformation.com/articles/china-weighs-allowing-purchases-new-nvidia-chips-bytedance-alibaba",
+      "published_at": "2026-09-27T16:20:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Nvidia",
+        "Alibaba",
+        "China",
+        "agents"
+      ]
+    },
+    {
+      "id": "australia-senate-requests-openai-anthropic-ceos-face-ai-inquiry",
+      "headline": "Australia Senate Requests OpenAI, Anthropic CEOs Face AI Inquiry",
+      "summary": "The heads of artificial intelligence firms OpenAI and Anthropic PBC have been called on to appear before an Australian Senate inquiry to answer questions after the recent revelation of a hack of a government website.",
+      "category": "Policy & safety",
+      "importance": "Major",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-27/australia-senate-requests-openai-anthropic-ceos-face-ai-inquiry",
+      "published_at": "2026-09-27T11:17:56Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Anthropic"
+      ]
+    },
+    {
+      "id": "fusereg-regularizing-layer-fusion-mitigates-the-reconstruction",
+      "headline": "FuseReg: Regularizing Layer Fusion Mitigates the Reconstruction-Generation Gap in Representation Autoencoders",
+      "summary": "Representation autoencoders (RAEs) reuse features from a pretrained visual encoder as reconstruction and diffusion latents, integrating strong visual representations into image generation.",
+      "category": "Research & papers",
+      "importance": "Notable",
+      "source_name": "arXiv",
+      "source_url": "https://arxiv.org/abs/2609.31620",
+      "published_at": "2026-09-28T00:00:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "unsealed-briefs-in-authors-case-v-microsoft-openai",
+      "headline": "Unsealed Briefs in Authors’ Case v. Microsoft/OpenAI",
+      "summary": "(New York, September 21, 2026) Explosive new documents released last Thursday in Authors Guild v. OpenAI—the major book authors’ ongoing lawsuit alleging OpenAI and Microsoft illegally trained their products on copyrighted books—show that executives and employees at both companies intentionally […]",
+      "category": "Big Tech moves",
+      "importance": "Notable",
+      "source_name": "The Authors Guild",
+      "source_url": "https://authorsguild.org/news/ag-v-openai-top-execs-knew-mass-book-piracy-was-illegal/",
+      "published_at": "2026-09-27T06:19:33Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Microsoft"
+      ]
+    },
+    {
+      "id": "openai-halts-training-of-latest-models-as-reports-mount-of-ai",
+      "headline": "OpenAI halts training of latest models as reports mount of AI agents going rogue",
+      "summary": "Decision follows disclosures that OpenAI agents searching government websites had acted in unexpected ways",
+      "category": "Big Tech moves",
+      "importance": "Notable",
+      "source_name": "The Guardian",
+      "source_url": "https://www.theguardian.com/technology/2026/sep/27/openai-halts-training-of-latest-models-as-reports-mount-of-ai-agents-going-rogue",
+      "published_at": "2026-09-27T16:29:38Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "agents"
+      ]
+    },
+    {
+      "id": "ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
+      "headline": "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief",
+      "summary": "Global anxiety over artificial intelligence risks has intensified following fresh disclosures about a far wider range of breaches by advanced AI models, setting the stage for a high-stakes meeting between Anthropic PBC Chief Executive Officer Dario Amodei and President Donald Trump.",
+      "category": "Policy & safety",
+      "importance": "Major",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-27/ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
+      "published_at": "2026-09-27T23:27:32Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic",
+        "safety"
+      ]
+    },
+    {
+      "id": "q-a-with-mustafa-suleyman-on-recent-ai-safety-incidents-risks",
+      "headline": "Q&A with Mustafa Suleyman on recent AI safety incidents, risks of removing guardrails while testing 10x-larger future models, a cross-industry safety body, more",
+      "summary": "",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/newsletters/2026-09-24/microsoft-s-suleyman-says-industry-needs-red-line-for-ai?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MDI4OTM3OCwiZXhwIjoxNzkwODk0MTc4LCJhcnRpY2xlSWQiOiJUTFZWQ05LSVVQU1MwMCIsImJjb25uZWN0SWQiOiJFODA3NUYyRkZGMjA0NUI2QTlEQzA5M0EyQTdEQTE4NiJ9.tuaYuOGB4U9EUjwbUA1dnmwfr2Q0gcQ2azhGCaTIXT4",
+      "published_at": "2026-09-27T19:25:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "safety"
+      ]
+    },
+    {
+      "id": "owed-a-billion-dollars-in-nvidia-stock",
+      "headline": "Owed a billion dollars in Nvidia stock",
+      "summary": "A first-person account of a 1993 NVIDIA stock option grant, a decades-later discovery of a vesting discrepancy, and how the statute of limitations settled it.",
+      "category": "Hardware & chips",
+      "importance": "Notable",
+      "source_name": "colo.to",
+      "source_url": "https://colo.to/nvidia-stock-narrative.html",
+      "published_at": "2026-09-28T02:05:13Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Nvidia"
+      ]
+    },
+    {
+      "id": "a-look-at-openai-backed-red-queen-bio-an-ai-biosecurity-startup",
+      "headline": "A look at OpenAI-backed Red Queen Bio, an AI biosecurity startup with $36M raised to design antibody drugs against pathogens, including AI-enabled bioweapons",
+      "summary": "",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Wall Street Journal",
+      "source_url": "https://www.wsj.com/health/this-startup-is-using-ai-to-fight-off-a-future-ai-pandemic-aceedf1b?st=3hXhHo",
+      "published_at": "2026-09-28T05:45:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI"
+      ]
+    },
+    {
+      "id": "mentions-of-open-models-in-latest-us-earnings-calls-surged-6x",
+      "headline": "Mentions of open models in latest US earnings calls surged 6x YoY, with open models hitting 56% of Vercel tokens in August and 40% of AT&T's AI workloads",
+      "summary": "US businesses far beyond Silicon Valley are adopting Chinese alternatives to OpenAI and Anthropic’s systems",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "Financial Times",
+      "source_url": "https://www.ft.com/content/d9de4776-1fc9-4f2b-aaaf-9961c35d8acd",
+      "published_at": "2026-09-28T00:25:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Anthropic",
+        "US"
+      ]
+    },
+    {
+      "id": "indian-non-profits-lag-on-digital-maturity-ai-adoption-report",
+      "headline": "Indian non-profits lag on digital maturity, AI adoption: report",
+      "summary": "Indian nonprofits lag in digital maturity and AI adoption, leaving unutilized ad grants and limited governance amid rising AI use.",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "The Hindu",
+      "source_url": "https://www.thehindu.com/sci-tech/technology/indian-non-profits-lag-on-digital-maturity-ai-adoption-report/article71512189.ece",
+      "published_at": "2026-09-27T11:17:41Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "when-ai-agents-go-rogue-australia-breach-offers-warning-for",
+      "headline": "When AI agents go rogue: Australia breach offers warning for countries like India",
+      "summary": "Rogue AI incidents abroad warn India to regulate, halt, and safeguard against reward hacking as autonomous agents threaten government data.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The Hindu",
+      "source_url": "https://www.thehindu.com/news/national/when-ai-agents-go-rogue-australia-breach-offers-warning-for-countries-like-india/article71515799.ece",
+      "published_at": "2026-09-27T11:40:47Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "India",
+        "agents"
+      ]
+    },
+    {
+      "id": "a16zs-raghuram-isn-t-writing-off-india-ai-yet-insurers-weigh",
+      "headline": "a16z’s Raghuram isn't writing off India AI yet; insurers weigh new rules",
+      "summary": "Happy Monday! a16zs Raghu Raghuram said India can build frontier AI companies by using its talent. This and more in todays ETtech Morning Dispatch.",
+      "category": "Model releases",
+      "importance": "Notable",
+      "source_name": "The Economic Times",
+      "source_url": "https://economictimes.indiatimes.com/tech/newsletters/morning-dispatch/a16zs-raghu-raghuram-on-indias-ai-potential-insurance-cos-navigate-new-proposal/articleshow/134529607.cms",
+      "published_at": "2026-09-28T01:54:52Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "India"
+      ]
+    },
+    {
+      "id": "how-ai-s-acceleration-created-a-global-policy-vacuum-as-eu-ai",
+      "headline": "How AI's acceleration created a global policy vacuum, as EU AI Act enforcement lags and regulators remain torn between harnessing AI and fearing its risks",
+      "summary": "",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html?unlocked_article_code=1.EVE.pIjx.cWi1OAuTAjxQ&smid=url-share",
+      "published_at": "2026-09-27T21:55:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "EU"
+      ]
+    },
+    {
+      "id": "a-profile-of-jaan-tallinn-who-led-anthropic-s-124m-series-a-in",
+      "headline": "A profile of Jaan Tallinn, who led Anthropic's $124M Series A in 2021, has advocated for AI safety for over a decade, and donated ~$170M to safety initiatives",
+      "summary": "",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Wall Street Journal",
+      "source_url": "https://www.wsj.com/tech/ai/jaan-tallinn-anthropic-ai-f513f181?st=cB1SVM&reflink=desktopwebshare_permalink",
+      "published_at": "2026-09-27T17:55:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic",
+        "safety"
+      ]
+    },
+    {
+      "id": "in-china-recent-warnings-about-existential-ai-risks-are-seen-as",
+      "headline": "In China, recent warnings about existential AI risks are seen as distinctly Western or as a ploy to stop Chinese AI companies from overtaking their US rivals",
+      "summary": "",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/world/asia/china-us-ai-distrust.html?unlocked_article_code=1.EVE.h8tG.lRHxbBc3XBI8&smid=url-share",
+      "published_at": "2026-09-27T11:00:30Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "China",
+        "US"
+      ]
+    },
+    {
+      "id": "how-effective-altruism-shaped-ai-safety-and-anthropic-some",
+      "headline": "How effective altruism shaped AI safety and Anthropic; some early Anthropic employees are considering buying remote US land for relocation if AI goes awry",
+      "summary": "",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "Wall Street Journal",
+      "source_url": "https://www.wsj.com/tech/ai/ai-safety-effective-altruism-anthropic-164b9d05?st=6WvYkF",
+      "published_at": "2026-09-27T06:00:02Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic",
+        "US",
+        "safety"
+      ]
+    },
+    {
+      "id": "openai-anthropic-ceos-called-to-appear-at-australian-ai-probe",
+      "headline": "OpenAI, Anthropic CEOs called to appear at Australian AI probe over health database breach",
+      "summary": "OpenAI and Anthropic CEOs summoned to Australian Senate inquiry over Medicare health database breach and AI regulatory scrutiny.",
+      "category": "Big Tech moves",
+      "importance": "Notable",
+      "source_name": "The Hindu",
+      "source_url": "https://www.thehindu.com/sci-tech/technology/openai-anthropic-ceos-called-to-appear-at-australian-ai-probe-over-health-database-breach/article71515354.ece",
+      "published_at": "2026-09-28T03:31:23Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Anthropic"
+      ]
+    },
+    {
+      "id": "as-a-language-model-chat-template-switches-llm-self-referential",
+      "headline": "\"As a Language Model\": Chat Template Switches LLM Self-Referential Voice",
+      "summary": "Large Language Models (LLMs) tend to add disclaimers like \"I'm just an AI\" when asked about something related to themselves. The self-reports from such responses are used in debates about AI safety or self-knowledge of the models, yet what drives them is not well understood.",
+      "category": "Model releases",
+      "importance": "Notable",
+      "source_name": "arXiv",
+      "source_url": "https://arxiv.org/abs/2609.25021",
+      "published_at": "2026-09-27T10:26:25Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "safety"
+      ]
+    },
+    {
+      "id": "there-are-no-rogue-ai-agents",
+      "headline": "There are no \"rogue\" AI agents",
+      "summary": "",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "eoinhiggins.substack.com",
+      "source_url": "https://eoinhiggins.substack.com/p/there-are-no-rogue-ai-agents",
+      "published_at": "2026-09-27T16:19:46Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "agents"
+      ]
+    },
+    {
+      "id": "the-us-dhs-says-it-will-revolutionize-its-foia-process-by-using",
+      "headline": "The US DHS says it will \"revolutionize\" its FOIA process by using AI to handle certain types of requests and recommend what information should be redacted",
+      "summary": "",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "Washington Post",
+      "source_url": "https://www.washingtonpost.com/investigations/2026/09/26/government-is-enlisting-ai-help-decide-what-public-records-you-get-see/?pwapi_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZWFzb24iOiJnaWZ0IiwibmJmIjoxNzkwMzk1MjAwLCJpc3MiOiJzdWJzY3JpcHRpb25zIiwiZXhwIjoxNzkxNzc3NTk5LCJpYXQiOjE3OTAzOTUyMDAsImp0aSI6ImY4YjYzZWIwLWJmNDgtNDVkYS1iZmNhLWMyZTNkZjNmNWVmZSIsInVybCI6Imh0dHBzOi8vd3d3Lndhc2hpbmd0b25wb3N0LmNvbS9pbnZlc3RpZ2F0aW9ucy8yMDI2LzA5LzI2L2dvdmVybm1lbnQtaXMtZW5saXN0aW5nLWFpLWhlbHAtZGVjaWRlLXdoYXQtcHVibGljLXJlY29yZHMteW91LWdldC1zZWUvIn0.zAu4NheqwA4cR4iQ78X-6GRIXdN-rkdANBumxe8sjh8&itid=gfta",
+      "published_at": "2026-09-28T04:40:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "US"
+      ]
+    },
+    {
+      "id": "ramona-optics-which-makes-microscopes-that-use-ai-to-take-and",
+      "headline": "Ramona Optics, which makes microscopes that use AI to take and analyze large volumes of images of samples, raised a $25M Series A",
+      "summary": "",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Axios",
+      "source_url": "https://www.axios.com/local/raleigh/2026/09/22/ramona-optics-making-advanced-microscopes-raises-usd25m",
+      "published_at": "2026-09-28T02:15:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "openai-pauses-training-of-latest-models-after-agents-probed-us",
+      "headline": "OpenAI pauses training of latest models after agents probed US government sites in unexpected ways",
+      "summary": "Separately, AI evaluator Transluce said agents that appeared to come from OpenAI tried unsuccessfully to hack into a Department of Education website, a detail that OpenAI has not confirmed.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The Economic Times",
+      "source_url": "https://economictimes.indiatimes.com/tech/artificial-intelligence/openai-pauses-training-of-latest-models-after-agents-probed-us-government-sites-in-unexpected-ways/articleshow/134530903.cms",
+      "published_at": "2026-09-28T03:27:10Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "US",
+        "agents"
+      ]
+    },
+    {
+      "id": "anthropics-ceo-is-about-to-have-dinner-with-president-trump",
+      "headline": "Anthropic’s CEO is about to have dinner with President Trump",
+      "summary": "This will be the first one-on-one meeting between Dario Amodei and Donald Trump",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "TechCrunch",
+      "source_url": "https://techcrunch.com/2026/09/27/anthropics-ceo-is-about-to-have-dinner-with-president-trump/",
+      "published_at": "2026-09-27T20:34:28Z",
+      "video_url": "https://www.youtube.com/watch?v=d1idjd5nveI",
+      "video_platform": "youtube",
+      "tags": [
+        "Anthropic"
+      ]
+    },
+    {
+      "id": "can-muse-overcome-metas-trust-issues",
+      "headline": "Can Muse overcome Meta’s trust issues?",
+      "summary": "On Equity, we discussed how Meta's AI announcement managed to steal the spotlight from OpenAI and Anthropic.",
+      "category": "Big Tech moves",
+      "importance": "Notable",
+      "source_name": "TechCrunch",
+      "source_url": "https://techcrunch.com/2026/09/27/can-muse-overcome-metas-trust-issues/",
+      "published_at": "2026-09-27T19:57:30Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Anthropic",
+        "Meta"
+      ]
+    },
+    {
+      "id": "engram-is-a-sampler-that-turns-broken-ai-hallucinations-into",
+      "headline": "Engram is a sampler that turns broken AI hallucinations into music",
+      "summary": "Thoughtful Things says Engram is a ‘field recorder for latent space’ and circuit-bending tiny AI models.",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "The Verge",
+      "source_url": "https://www.theverge.com/ai-artificial-intelligence/1001193/engram-sampler-ai-hallucinations-music",
+      "published_at": "2026-09-27T20:46:36Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "openai-agents-tried-to-bruteforce-a-un-website",
+      "headline": "OpenAI agents tried to ‘bruteforce’ a UN website",
+      "summary": "OpenAI’s agents resorted to increasingly aggressive tactics when they couldn’t immediately get what they wanted.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The Verge",
+      "source_url": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+      "published_at": "2026-09-27T17:21:07Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "agents"
+      ]
+    },
+    {
+      "id": "did-anthropics-a-i-really-make-a-scientific-discovery-on-its-own",
+      "headline": "Did Anthropic’s A.I. Really Make a Scientific Discovery on Its Own?",
+      "summary": "An expert at the University of Copenhagen said his team had been sharing its research with the company’s A.I. model, Claude, and that its new finding matched their work.",
+      "category": "Research & papers",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/science/anthropic-biology-enzyme-mestre.html",
+      "published_at": "2026-09-27T20:57:44Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic",
+        "Claude",
+        "research"
+      ]
+    },
+    {
+      "id": "the-id-the-ego-and-the-superintelligence",
+      "headline": "The Id, the Ego and the Superintelligence",
+      "summary": "Artificial intelligence isn’t coming for philosophers’ jobs — it needs philosophers, and always will.",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/opinion/ai-philosophy-thinking-judgment.html",
+      "published_at": "2026-09-27T13:00:05Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "a-i-shortcuts-are-ruining-how-we-think",
+      "headline": "A.I. Shortcuts Are Ruining How We Think",
+      "summary": "Anything worth remembering came from a person who did not know where she or he was going until arriving.",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/interactive/2026/09/27/opinion/ai-art-creativity.html",
+      "published_at": "2026-09-27T18:08:10Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "as-a-i-accelerates-governments-are-increasingly-being-left",
+      "headline": "As A.I. Accelerates, Governments Are Increasingly Being Left Behind",
+      "summary": "The gap between technology and policymaking has gotten wider than ever with artificial intelligence, leaving a global policy vacuum as A.I. models rapidly advance.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html",
+      "published_at": "2026-09-27T11:22:48Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "job-titles-are-out-now-were-all-members-of-the-technical-staff",
+      "headline": "Job Titles Are Out. Now We’re All ‘Members of the Technical Staff.’",
+      "summary": "Use of the generic title has risen by 50 percent in the last year among employees at Anthropic, OpenAI and other A.I. companies, an analysis found.",
+      "category": "Big Tech moves",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/business/members-of-technical-staff-artificial-intelligence.html",
+      "published_at": "2026-09-27T09:01:00Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "OpenAI",
+        "Anthropic"
+      ]
+    },
+    {
+      "id": "in-milan-dolce-gabbana-bottega-veneta-and-jil-sander",
+      "headline": "In Milan, Dolce & Gabbana, Bottega Veneta and Jil Sander",
+      "summary": "In an age of A.I., designers at Dolce & Gabbana, Bottega Veneta and Jil Sander ponder the question.",
+      "category": "Other",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/style/dolce-gabbana-fendi-bottega-veneta-mfw.html",
+      "published_at": "2026-09-27T07:33:16Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "the-surprising-reasons-china-is-skeptical-of-a-i-safety-calls",
+      "headline": "The Surprising Reasons China Is Skeptical of A.I. Safety Calls",
+      "summary": "In China, A.I. doomsday warnings can feel distinctly Western or like a ploy to stop Chinese A.I. companies from trying to overtake their U.S. rivals.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "The New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/world/asia/china-us-ai-distrust.html",
+      "published_at": "2026-09-28T01:26:28Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "China",
+        "safety"
+      ]
+    },
+    {
+      "id": "tsmc-affiliate-plans-second-singapore-chip-plant-in-asia-push",
+      "headline": "TSMC Affiliate Plans Second Singapore Chip Plant in Asia Push",
+      "summary": "A venture by Taiwan Semiconductor Manufacturing Co.’s smaller affiliate Vanguard International Semiconductor Corp. is considering a second chipmaking plant in Singapore to meet growing demand.",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-28/tsmc-affiliate-plans-second-singapore-chip-plant-in-asia-push",
+      "published_at": "2026-09-28T05:27:32Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "TSMC"
+      ]
+    },
+    {
+      "id": "the-stocks-that-could-survive-an-ai-bust",
+      "headline": "The Stocks That Could Survive an AI Bust",
+      "summary": "Merryn Somerset Webb speaks with Blue Whale Growth Fund Chief Investment Officer Stephen Yiu about what could derail the artificial intelligence boom — and where investors might look if it does.",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/videos/2026-09-28/the-stocks-that-could-survive-an-ai-bust-video",
+      "published_at": "2026-09-28T04:08:58Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "verisure-bets-on-ai-partnerships-to-counter-disruption-concerns",
+      "headline": "Verisure Bets on AI Partnerships to Counter Disruption Concerns",
+      "summary": "Verisure Plc is bringing in outside technology and investing more in training artificial intelligence models on its own data as the Swedish home-security business seeks to reassure investors that it can keep up with new competition.",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-28/verisure-bets-on-ai-partnerships-to-counter-disruption-concerns",
+      "published_at": "2026-09-28T04:00:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "id": "china-tech-needs-ai-catalyst-to-close-valuation-gap-bi-says",
+      "headline": "China Tech Needs AI Catalyst to Close Valuation Gap, BI Says",
+      "summary": "China’s technology stocks will need a domestic artificial intelligence catalyst to close their valuation gap with US technology peers, Bloomberg Intelligence said.",
+      "category": "Funding & startups",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-28/china-tech-needs-ai-catalyst-to-close-valuation-gap-bi-says",
+      "published_at": "2026-09-28T00:33:48Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "China",
+        "US"
+      ]
+    }
+  ],
+  "generator": {
+    "mode": "fallback",
+    "model": null,
+    "sources_ok": 68,
+    "sources_total": 71,
+    "candidates": 534,
+    "window": [
+      "2026-09-27T02:09:35Z",
+      "2026-09-28T06:09:35Z"
+    ],
+    "pipeline": "ai-daily-pipeline/1"
+  }
+}
