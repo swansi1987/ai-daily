@@ -1,11 +1,11 @@
 {
   "date": "2026-09-28",
-  "generated_at": "2026-09-28T11:39:35+05:30",
+  "generated_at": "2026-09-28T11:45:47+05:30",
   "highlights": [
     "Anthropic’s Dario Amodei gets the SNL treatment",
     "Sources: China's government asked Alibaba, ByteDance, and others to report on their plans to buy Nvidia RTX Pro 5500, saying it intends…",
     "Australia Senate Requests OpenAI, Anthropic CEOs Face AI Inquiry",
-    "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief"
+    "As A.I. makes law firms more efficient, clients ask: 'Where's my discount?'"
   ],
   "items": [
     {
@@ -120,22 +120,6 @@
       ]
     },
     {
-      "id": "ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
-      "headline": "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief",
-      "summary": "Global anxiety over artificial intelligence risks has intensified following fresh disclosures about a far wider range of breaches by advanced AI models, setting the stage for a high-stakes meeting between Anthropic PBC Chief Executive Officer Dario Amodei and President Donald Trump.",
-      "category": "Policy & safety",
-      "importance": "Major",
-      "source_name": "Bloomberg",
-      "source_url": "https://www.bloomberg.com/news/articles/2026-09-27/ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
-      "published_at": "2026-09-27T23:27:32Z",
-      "video_url": null,
-      "video_platform": null,
-      "tags": [
-        "Anthropic",
-        "safety"
-      ]
-    },
-    {
       "id": "q-a-with-mustafa-suleyman-on-recent-ai-safety-incidents-risks",
       "headline": "Q&A with Mustafa Suleyman on recent AI safety incidents, risks of removing guardrails while testing 10x-larger future models, a cross-industry safety body, more",
       "summary": "",
@@ -198,6 +182,21 @@
       ]
     },
     {
+      "id": "how-ai-s-acceleration-created-a-global-policy-vacuum-as-eu-ai",
+      "headline": "How AI's acceleration created a global policy vacuum, as EU AI Act enforcement lags and regulators remain torn between harnessing AI and fearing its risks",
+      "summary": "",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "New York Times",
+      "source_url": "https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html?unlocked_article_code=1.EVE.pIjx.cWi1OAuTAjxQ&smid=url-share",
+      "published_at": "2026-09-27T21:55:01Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "EU"
+      ]
+    },
+    {
       "id": "indian-non-profits-lag-on-digital-maturity-ai-adoption-report",
       "headline": "Indian non-profits lag on digital maturity, AI adoption: report",
       "summary": "Indian nonprofits lag in digital maturity and AI adoption, leaving unutilized ad grants and limited governance amid rising AI use.",
@@ -241,21 +240,6 @@
       "video_platform": null,
       "tags": [
         "India"
-      ]
-    },
-    {
-      "id": "how-ai-s-acceleration-created-a-global-policy-vacuum-as-eu-ai",
-      "headline": "How AI's acceleration created a global policy vacuum, as EU AI Act enforcement lags and regulators remain torn between harnessing AI and fearing its risks",
-      "summary": "",
-      "category": "Policy & safety",
-      "importance": "Notable",
-      "source_name": "New York Times",
-      "source_url": "https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html?unlocked_article_code=1.EVE.pIjx.cWi1OAuTAjxQ&smid=url-share",
-      "published_at": "2026-09-27T21:55:01Z",
-      "video_url": null,
-      "video_platform": null,
-      "tags": [
-        "EU"
       ]
     },
     {
@@ -632,6 +616,22 @@
         "China",
         "US"
       ]
+    },
+    {
+      "id": "ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
+      "headline": "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief",
+      "summary": "Global anxiety over artificial intelligence risks has intensified following fresh disclosures about a far wider range of breaches by advanced AI models, setting the stage for a high-stakes meeting between Anthropic PBC Chief Executive Officer Dario Amodei and President Donald Trump.",
+      "category": "Policy & safety",
+      "importance": "Notable",
+      "source_name": "Bloomberg",
+      "source_url": "https://www.bloomberg.com/news/articles/2026-09-27/ai-breaches-add-to-safety-fears-as-trump-meets-anthropic-chief",
+      "published_at": "2026-09-27T23:27:32Z",
+      "video_url": null,
+      "video_platform": null,
+      "tags": [
+        "Anthropic",
+        "safety"
+      ]
     }
   ],
   "generator": {
@@ -639,10 +639,10 @@
     "model": null,
     "sources_ok": 68,
     "sources_total": 71,
-    "candidates": 534,
+    "candidates": 532,
     "window": [
-      "2026-09-27T02:09:35Z",
-      "2026-09-28T06:09:35Z"
+      "2026-09-27T02:15:47Z",
+      "2026-09-28T06:15:47Z"
     ],
     "pipeline": "ai-daily-pipeline/1"
   }
