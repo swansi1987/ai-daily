@@ -54,10 +54,13 @@
   }
   function sparkSVG(r, w, h) {
     const vals = (r.spark || []).filter(v => v != null && isFinite(v));
-    if (vals.length < 2) return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-hidden="true"></svg>`;
+    // Series built from our own snapshots (GIFT Nifty, MCX) need a few points before the shape means anything.
+    const minPts = r.spark_src === 'snapshots' ? 6 : 2;
+    if (vals.length < minPts) return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-hidden="true"></svg>`;
     let lo = Math.min(...vals), hi = Math.max(...vals);
-    const base = r.spark_src === 'intraday 5m' ? r.prev_close : null;
-    if (base && base > lo - (hi - lo) * 0.6 && base < hi + (hi - lo) * 0.6) { lo = Math.min(lo, base); hi = Math.max(hi, base); }
+    let base = r.spark_src === 'intraday 5m' ? r.prev_close : null;
+    // Dashed previous-close line only when it sits near the day's range (otherwise it would squash the line).
+    if (base && base > lo - (hi - lo) * 0.6 && base < hi + (hi - lo) * 0.6) { lo = Math.min(lo, base); hi = Math.max(hi, base); } else base = null;
     const span = hi - lo || 1, pad = 2;
     const x = i => (i / (vals.length - 1)) * (w - 2 * pad) + pad;
     const y = v => h - pad - ((v - lo) / span) * (h - 2 * pad);
@@ -274,7 +277,10 @@
     const now = Math.floor(Date.now() / 1000);
     st.lastSync = Date.now();
     if (!snap) setStatus('Sync failed. Check your connection and try again.', 'bad');
-    else if (liveOK === 0) {
+    else if (liveOK === 0 && snapErr) {
+      const g = Date.parse(snap.generated_at) / 1000;
+      setStatus(`Sync failed: couldn't reach the data feeds (offline?). Still showing data from <b>${esc(fmtTime(g))} IST</b>.`, 'bad');
+    } else if (liveOK === 0) {
       const g = Date.parse(snap.generated_at) / 1000;
       setStatus(`Live feeds unreachable, so this is the saved snapshot from <b>${esc(fmtTime(g))} IST</b>.`, 'warn');
     } else {
