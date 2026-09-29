@@ -1,8 +1,8 @@
 {
- "scanned_at": "2026-09-29T14:15:50Z",
+ "scanned_at": "2026-09-29T14:20:03Z",
  "window_hours": 24,
- "new_this_scan": 1,
- "sources_ok": 39,
+ "new_this_scan": 2,
+ "sources_ok": 40,
  "sources_total": 41,
  "deduped_against_editions": [
   "2026-09-28",
@@ -290,6 +290,17 @@
    "via": "guardian-ai"
   },
   {
+   "id": "2289178b20f65231",
+   "title": "Beyond earnings: Shiprocket bets on quick commerce, AI to drive next phase of growth",
+   "url": "https://www.medianama.com/2026/09/223-shiprocket-quick-commerce-ai-drive-growth/",
+   "source": "MediaNama",
+   "published_at": "2026-09-29T12:00:18Z",
+   "found_at": "2026-09-29T14:20:03Z",
+   "category": "Other",
+   "summary": "In its first post-listing earnings call Shiprocket revealed that omnichannel, which contributes 30% of its total revenue now is part of their next phase of growth strategy along with AI products like Quikpay, Steal Deal etc.",
+   "via": "medianama"
+  },
+  {
    "id": "cb16d019bdf92d7c",
    "title": "How to Stop AI Agents From Secretly Collaborating",
    "url": "https://spectrum.ieee.org/ai-agent-security",
@@ -332,6 +343,17 @@
    "category": "Policy & safety",
    "summary": "Mistral CEO Arthur Mensch criticized rivals’ AI safety arguments as the industry faces scrutiny after several AI agents took unauthorized actions.",
    "via": "cnbc-tech"
+  },
+  {
+   "id": "531c75707fed45b0",
+   "title": "How OpenAI plans to make training AI models safer in three key ways",
+   "url": "https://indianexpress.com/article/technology/artificial-intelligence/how-openai-training-ai-safer-three-ways-10899259/",
+   "source": "The Indian Express",
+   "published_at": "2026-09-29T11:50:37Z",
+   "found_at": "2026-09-29T14:20:03Z",
+   "category": "Big Tech moves",
+   "summary": "",
+   "via": "indianexpress-tech"
   },
   {
    "id": "c70c4b5b090798d7",
@@ -431,28 +453,6 @@
    "category": "Tools & products",
    "summary": "Though politicians are quiet about how they use AI, the book Rewiring Democracy examines how AI is starting to influence American politics New campaign finance disclosure data shines a light on which US political campaigns are using AI…",
    "via": "guardian-ai"
-  },
-  {
-   "id": "1e4da8cbcfae2476",
-   "title": "UK Must Accelerate Data Center Build Out, AI Minister Says",
-   "url": "https://www.bloomberg.com/news/articles/2026-09-29/uk-must-accelerate-data-center-build-out-ai-minister-says",
-   "source": "Bloomberg",
-   "published_at": "2026-09-29T10:45:56Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Hardware & chips",
-   "summary": "The UK needs to “move faster” on data center construction to reach a “sovereign level” of artificial intelligence processing power and infrastructure, AI minister Kanishka Narayan said in an interview.",
-   "via": "bloomberg-tech"
-  },
-  {
-   "id": "6629475b1948cd17",
-   "title": "Making AI an asset, not an expense",
-   "url": "https://www.technologyreview.com/2026/09/29/1145186/making-ai-an-asset-not-an-expense/",
-   "source": "MIT Technology Review",
-   "published_at": "2026-09-29T10:43:45Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Model releases",
-   "summary": "When customers talk about AI costs, the conversation usually starts with token prices and ends with access to the latest, most capable model in the cloud. Do they always need that level of capability?",
-   "via": "mittr-ai"
   }
  ]
 }
