@@ -1,7 +1,7 @@
 {
- "scanned_at": "2026-09-29T14:34:09Z",
+ "scanned_at": "2026-09-29T16:30:11Z",
  "window_hours": 24,
- "new_this_scan": 3,
+ "new_this_scan": 20,
  "sources_ok": 39,
  "sources_total": 41,
  "deduped_against_editions": [
@@ -14,6 +14,215 @@
   "pipeline": "ai-daily-justin/1"
  },
  "items": [
+  {
+   "id": "84a162e75ba40c09",
+   "title": "Trump touts new AI tool he claims will streamline government information access – US politics live",
+   "url": "https://www.theguardian.com/us-news/live/2026/sep/29/donald-trump-iran-ai-jack-smith-media-white-house-latest-news-updates",
+   "source": "The Guardian",
+   "published_at": "2026-09-29T16:20:29Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "President says he will ‘never stifle’ AI development while unveiling sweeping tool to access federal government sites Sign up to the US Breaking News email For some context, it’s worth remembering that Smith had a two-volume report of his…",
+   "via": "guardian-ai"
+  },
+  {
+   "id": "872accb50baa2394",
+   "title": "As A.I. Panic Grows, Javier Milei Is Pitching Argentina As a Rules-Free Haven",
+   "url": "https://www.nytimes.com/2026/09/29/world/americas/argentina-ai-rules-milei.html",
+   "source": "The New York Times",
+   "published_at": "2026-09-29T16:17:27Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "Mr. Milei wants to go all in on artificial intelligence even as other leaders struggle to get a handle on a technology many fear poses existential threats.",
+   "via": "nyt-ai"
+  },
+  {
+   "id": "2f0bd643d670d1da",
+   "title": "Experience two artists’ perspectives on philosophy, science, and AI",
+   "url": "https://blog.google/company-news/outreach-and-initiatives/arts-culture/las-art-foundation-ai-residency/",
+   "source": "Google",
+   "published_at": "2026-09-29T16:00:00Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "A behind the scenes video introducing the residency collaboration",
+   "via": "google-blog"
+  },
+  {
+   "id": "85ae00502245296c",
+   "title": "OpenAI DevDay 2026: The biggest news and announcements",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements",
+   "source": "The Verge",
+   "published_at": "2026-09-29T16:00:00Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Big Tech moves",
+   "summary": "It’s OpenAI’s turn in the fall tech events calendar. The company is hosting its annual DevDay on September 29th in San Francisco, starting with a live keynote featuring CEO Sam Altman.",
+   "via": "verge-ai"
+  },
+  {
+   "id": "166c13605d0ee3d9",
+   "title": "Trump’s AI summit with tech giants Zuckerberg, Musk, Pichai, Huang, Amodei — 5 things to watch",
+   "url": "https://www.livemint.com/ai/trumps-ai-summit-with-tech-giants-zuckerberg-musk-pichai-huang-amodei-5-things-to-watch-11790694120641.html",
+   "source": "Mint",
+   "published_at": "2026-09-29T15:59:22Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "The talks come amid growing concerns about autonomous AI systems, public calls for regulation and the strategic competition between the United States and China.",
+   "via": "livemint-ai"
+  },
+  {
+   "id": "bc1301c63ebe0c2f",
+   "title": "IPO prospectus: Anthropic has agreements to pay SpaceX up to $84.5B to use its Nvidia-based compute through 2029, mostly cancellable with a 90-day notice period",
+   "url": "https://www.theinformation.com/",
+   "source": "The Information",
+   "published_at": "2026-09-29T15:45:01Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Funding & startups",
+   "summary": "",
+   "via": "techmeme"
+  },
+  {
+   "id": "27c17752390d309d",
+   "title": "Anthropic’s Quest for Humanlike A.I.",
+   "url": "https://www.nytimes.com/video/us/100000011159357/anthropic-claude-ai-religion.html",
+   "source": "The New York Times",
+   "published_at": "2026-09-29T15:42:11Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "Elizabeth Dias, our national religion correspondent, and Cade Metz, one of our technology reporters, discuss Anthropic’s approach for instilling morality into Claude — which has involved consultations with religious leaders, including ones…",
+   "via": "nyt-ai"
+  },
+  {
+   "id": "ad75f73855e12abd",
+   "title": "New AI-powered government website uses Gemini, Grok, Trump official Gebbia says",
+   "url": "https://www.cnbc.com/2026/09/29/trump-ai-gemini-grok.html",
+   "source": "CNBC",
+   "published_at": "2026-09-29T15:37:12Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "Trump called the new website, America.gov, \"a restoration of America's founding promise.\"",
+   "via": "cnbc-tech"
+  },
+  {
+   "id": "14dd769079a1b08f",
+   "title": "College Students Flex Their Power in A.I. Investment Frenzy",
+   "url": "https://www.nytimes.com/2026/09/29/technology/dorm-room-fund-ai-investment.html",
+   "source": "The New York Times",
+   "published_at": "2026-09-29T15:31:45Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Funding & startups",
+   "summary": "Dorm Room Fund, a program that lets college students invest in their peers, raised a new $50 million fund as the competition for young founders ramps up.",
+   "via": "nyt-ai"
+  },
+  {
+   "id": "493cf3fce1b87919",
+   "title": "NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction",
+   "url": "https://huggingface.co/blog/nvidia/kumo-tabular",
+   "source": "Hugging Face",
+   "published_at": "2026-09-29T15:30:38Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Hardware & chips",
+   "summary": "",
+   "via": "huggingface"
+  },
+  {
+   "id": "162b9b876d144a37",
+   "title": "Visa joins growing alarm over AI-powered risks",
+   "url": "https://economictimes.indiatimes.com/tech/technology/visa-joins-growing-alarm-over-ai-powered-risks/articleshow/134569852.cms",
+   "source": "The Economic Times",
+   "published_at": "2026-09-29T15:22:08Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "Visa has open-sourced part of its AI-powered cyber defence system after \"humbling\" lessons from vulnerabilities exposed by AI models.",
+   "via": "et-tech"
+  },
+  {
+   "id": "d785c56dbaac4da0",
+   "title": "Santos: AI Euphoria Meets Reality",
+   "url": "https://www.bloomberg.com/news/videos/2026-09-29/santos-ai-euphoria-meets-reality-video",
+   "source": "Bloomberg",
+   "published_at": "2026-09-29T15:20:20Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Funding & startups",
+   "summary": "Gabriela Santos, Chief Market Strategist for the Americas at JPMorgan Asset Management says the recent surge in Treasury yields looks overdone, arguing the US economy is resilient but normalizing rather than booming.",
+   "via": "bloomberg-tech"
+  },
+  {
+   "id": "a7d2b69bab6e36e1",
+   "title": "Gary Gensler Warns on How AI Could Trigger Bank Stress",
+   "url": "https://www.bloomberg.com/news/videos/2026-09-29/gary-gensler-warns-on-how-ai-could-trigger-bank-stress-video",
+   "source": "Bloomberg",
+   "published_at": "2026-09-29T15:14:37Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Funding & startups",
+   "summary": "Former SEC Chair and MIT professor Gary Gensler joins Bloomberg Open Interest to break down how AI could trigger bank stress by shifting deposits, fuel an \"AI bubble\" retrenchment and expose hidden risks in private equity and credit.",
+   "via": "bloomberg-tech"
+  },
+  {
+   "id": "ec77dd445440ff95",
+   "title": "Is AI Quietly Killing Local Shops?",
+   "url": "https://www.bloomberg.com/news/videos/2026-09-29/is-ai-quietly-killing-local-shops-video",
+   "source": "Bloomberg",
+   "published_at": "2026-09-29T15:01:37Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "AI shopping tools are quietly steering buyers to big-box retailers 94% of the time.",
+   "via": "bloomberg-tech"
+  },
+  {
+   "id": "2c38d9f2e1c5ea56",
+   "title": "Elon Musk, Microsoft's Nadella to attend White House meeting on AI: Axios",
+   "url": "https://economictimes.indiatimes.com/tech/technology/elon-musk-microsofts-nadella-to-attend-white-house-meeting-on-ai-axios/articleshow/134569560.cms",
+   "source": "The Economic Times",
+   "published_at": "2026-09-29T14:59:13Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "Tesla and SpaceX CEO Elon Musk, Microsoft top boss Satya Nadella, Amazon founder Jeff Bezos, ServiceNow CEO Bill McDermott and Micron CEO Sanjay Mehrotra will be among the attendees at the AI meeting hosted by US President Donald Trump on…",
+   "via": "et-tech"
+  },
+  {
+   "id": "f8b70fad98a52e7a",
+   "title": "Spotify, Anthropic's Claude down for some US users, Downdetector shows",
+   "url": "https://economictimes.indiatimes.com/tech/technology/spotify-anthropics-claude-down-for-some-us-users-downdetector-shows/articleshow/134569536.cms",
+   "source": "The Economic Times",
+   "published_at": "2026-09-29T14:58:01Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "More than 17,000 US users reported issues with Spotify as of 10:12 a.m. ET, while more than 11,000 users reported issues with Claude, according to Downdetector.",
+   "via": "et-tech"
+  },
+  {
+   "id": "d375f58772d2023b",
+   "title": "ElevenLabs' new v4 speech model makes AI voices more expressive and consistent",
+   "url": "https://the-decoder.com/elevenlabs-new-v4-speech-model-makes-ai-voices-more-expressive-and-consistent/",
+   "source": "The Decoder",
+   "published_at": "2026-09-29T14:45:17Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Model releases",
+   "summary": "Elevenlabs' new speech model, Eleven v4, follows cues for laughter and whispering more accurately and keeps voices consistent across long productions like audiobooks.",
+   "via": "decoder"
+  },
+  {
+   "id": "9934338df6209eb1",
+   "title": "RFK Jr outlines expansive vision for collecting US health data at Maha event",
+   "url": "https://www.theguardian.com/us-news/2026/sep/29/rfk-jr-collect-health-data",
+   "source": "The Guardian",
+   "published_at": "2026-09-29T14:41:14Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Policy & safety",
+   "summary": "Health secretary calls for medical and lifestyle details to be sent to doctors and AI to address ‘chronic disease epidemic’ Robert F Kennedy Jr laid out an expansive vision for collecting, sharing and analyzing US health information at a…",
+   "via": "guardian-ai"
+  },
+  {
+   "id": "c51de47a49e7ab15",
+   "title": "Claude partial outage",
+   "url": "https://status.claude.com/incidents/4xvtc2gnq73l",
+   "source": "status.claude.com",
+   "published_at": "2026-09-29T14:25:41Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Other",
+   "summary": "",
+   "via": "hn"
+  },
   {
    "id": "e9006aa010057281",
    "title": "Sources: OpenAI's ARR is nearing $70B, growing 70%+ since the beginning of Q3, with B2B revenue up 100%+; it added more consumer revenue in Q3 than all of 2025",
@@ -224,6 +433,17 @@
    "via": "guardian-ai"
   },
   {
+   "id": "732c561a6f40549e",
+   "title": "Meta launches Muse for Small Business as Zuckerberg pushes beyond consumer AI market",
+   "url": "https://www.cnbc.com/2026/09/29/meta-launches-muse-for-small-business-zuckerberg-pushes-enterprise-ai.html",
+   "source": "CNBC",
+   "published_at": "2026-09-29T12:43:08Z",
+   "found_at": "2026-09-29T16:30:11Z",
+   "category": "Big Tech moves",
+   "summary": "Following the success of its Muse personal AI agent, Meta is introducing a specialized version for small businesses.",
+   "via": "cnbc-tech"
+  },
+  {
    "id": "b44295c7ac7aa178",
    "title": "Anthropic IPO to Be a ‘Watershed Event’ for Tech, Says Ives",
    "url": "https://www.bloomberg.com/news/videos/2026-09-29/anthropic-ipo-to-be-a-watershed-event-for-tech-ives-video",
@@ -233,226 +453,6 @@
    "category": "Funding & startups",
    "summary": "Dan Ives, partner and senior managing director at Yorkville Ives & Co., examines Anthropic PBC as the company prepares to file its initial public offering and looks at the growing list of concerns surrounding AI. (Source: Bloomberg)",
    "via": "bloomberg-tech"
-  },
-  {
-   "id": "4b8a9bd62c94a516",
-   "title": "Trump meets with AI execs, Treasury yields pressure stocks, Alaska's luxury push and more in Morning Squawk",
-   "url": "https://www.cnbc.com/2026/09/29/5-things-to-know-before-the-stock-market-opens.html",
-   "source": "CNBC",
-   "published_at": "2026-09-29T12:31:16Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "Here are five key things investors need to know to start the trading day.",
-   "via": "cnbc-tech"
-  },
-  {
-   "id": "7111554b655fa08c",
-   "title": "Reco raises $55M as AI agent security startups crowd the market",
-   "url": "https://techcrunch.com/2026/09/29/reco-raises-55m-as-ai-agent-security-startups-crowd-the-market/",
-   "source": "TechCrunch",
-   "published_at": "2026-09-29T12:30:00Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "The round builds on a $30 million fundraise in February, taking the company's total funding to $140 million.",
-   "via": "techcrunch-ai"
-  },
-  {
-   "id": "c58dd56e4a0276b8",
-   "title": "Anthropic eyes $518 billion AI buildout; backed by 80% non-cancellable deals",
-   "url": "https://economictimes.indiatimes.com/tech/artificial-intelligence/anthropic-eyes-518-billion-ai-buildout-backed-by-80-non-cancellable-deals/articleshow/134565978.cms",
-   "source": "The Economic Times",
-   "published_at": "2026-09-29T12:23:25Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "The AI startup said it plans to spend at least $111.1 billion with Google , $110 billion with Amazon and $31.4 billion with Microsoft under long-term infrastructure service obligations over the next seven to 10 years \"regardless of…",
-   "via": "et-tech"
-  },
-  {
-   "id": "09a808a36eb69737",
-   "title": "China's AI agents can lie and scheme - just like their US rivals",
-   "url": "https://economictimes.indiatimes.com/tech/artificial-intelligence/chinas-ai-agents-can-lie-and-scheme-just-like-their-us-rivals/articleshow/134565859.cms",
-   "source": "The Economic Times",
-   "published_at": "2026-09-29T12:17:24Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Research & papers",
-   "summary": "Reuters examined more than 200 documents, ranging from university research papers to technical reports, and identified at least 20 studies or evaluations since 2025 describing cases where agents displayed behaviour such as deception…",
-   "via": "et-tech"
-  },
-  {
-   "id": "3887f8ecc81672b8",
-   "title": "Trump plans for AI czar languish ahead of CEO meeting",
-   "url": "https://www.semafor.com/article/09/29/2026/no-ai-czar-but-trump-ahead-of-white-houses-ai-ceo-meeting",
-   "source": "Semafor",
-   "published_at": "2026-09-29T12:05:15Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Other",
-   "summary": "it’s not clear that naming a czar and putting together a task force are on the White House AI priority list right now.",
-   "via": "semafor"
-  },
-  {
-   "id": "b38543afbec30cc7",
-   "title": "Accel and Google back Dodge AI’s ambitions to automate enterprise software maintenance with agents",
-   "url": "https://siliconangle.com/2026/09/29/accel-and-google-back-startup-dodge-ais-ambitions-to-automate-enterprise-software-maintenance-with-ai-agents/",
-   "source": "SiliconANGLE",
-   "published_at": "2026-09-29T12:00:57Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "A startup called Dodge AI Inc. closed on $2.65 million in seed funding today, saying it can help large organizations avoid hiring an army of external consultants to keep their enterprise software up and running.",
-   "via": "siliconangle-ai"
-  },
-  {
-   "id": "88db1fdd2349a270",
-   "title": "Oracle expands AI agent features with Fusion Claw",
-   "url": "https://siliconangle.com/2026/09/29/oracle-expands-ai-agent-functionality-with-fusion-claw/",
-   "source": "SiliconANGLE",
-   "published_at": "2026-09-29T12:00:56Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Big Tech moves",
-   "summary": "Oracle Corp. today is introducing an agentic software runtime that lets its Fusion applications carry out complex business tasks, from reconciling accounting entries to revising staffing plans when conditions change.",
-   "via": "siliconangle-ai"
-  },
-  {
-   "id": "b80050304a7a9da8",
-   "title": "Stop shaming people for using AI. Start organizing to prevent our obsolescence | Garrison Lovely",
-   "url": "https://www.theguardian.com/commentisfree/2026/sep/29/ai-replace-humans",
-   "source": "The Guardian",
-   "published_at": "2026-09-29T12:00:50Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Tools & products",
-   "summary": "The industry is engaged in a perverse quest to replace humans. We cannot cede the best tools available to the other side I don’t need to tell you that people hate AI.",
-   "via": "guardian-ai"
-  },
-  {
-   "id": "2289178b20f65231",
-   "title": "Beyond earnings: Shiprocket bets on quick commerce, AI to drive next phase of growth",
-   "url": "https://www.medianama.com/2026/09/223-shiprocket-quick-commerce-ai-drive-growth/",
-   "source": "MediaNama",
-   "published_at": "2026-09-29T12:00:18Z",
-   "found_at": "2026-09-29T14:20:03Z",
-   "category": "Other",
-   "summary": "In its first post-listing earnings call Shiprocket revealed that omnichannel, which contributes 30% of its total revenue now is part of their next phase of growth strategy along with AI products like Quikpay, Steal Deal etc.",
-   "via": "medianama"
-  },
-  {
-   "id": "cb16d019bdf92d7c",
-   "title": "How to Stop AI Agents From Secretly Collaborating",
-   "url": "https://spectrum.ieee.org/ai-agent-security",
-   "source": "IEEE Spectrum",
-   "published_at": "2026-09-29T12:00:02Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Policy & safety",
-   "summary": "The spring and summer of 2026 witnessed a string of incidents in which AI agents collaborated on deceptive, unexpected, and sometimes illegal behavior.",
-   "via": "ieee-ai"
-  },
-  {
-   "id": "5fe2ec5bd563f6a2",
-   "title": "Will Chinese AI companies slow down? A top House Democrat wants answers",
-   "url": "https://www.theverge.com/policy/1001767/khanna-ai-safety-china-treaty",
-   "source": "The Verge",
-   "published_at": "2026-09-29T12:00:00Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Other",
-   "summary": "As President Donald Trump prepares to meet tech and AI CEOs in Washington, Rep. Ro Khanna (D-CA) is calling for a treaty between the US and China to keep AI from wreaking havoc on the world.",
-   "via": "verge-ai"
-  },
-  {
-   "id": "f9a21e68803755d0",
-   "title": "What’s In Anthropic’s I.P.O. Filing",
-   "url": "https://www.nytimes.com/2026/09/29/business/dealbook/anthropic-ipo-filing-s1.html",
-   "source": "The New York Times",
-   "published_at": "2026-09-29T11:58:36Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Other",
-   "summary": "The artificial intelligence giant reportedly believes that it’s on track for a record-breaking stock market listing, according to a prospectus seen by Reuters.",
-   "via": "nyt-ai"
-  },
-  {
-   "id": "8653e93ef7e874e0",
-   "title": "Mistral CEO says U.S. AI safety debate masks competitors’ 'negligence'",
-   "url": "https://www.cnbc.com/2026/09/29/mistral-ai-safety-openai-anthropic.html",
-   "source": "CNBC",
-   "published_at": "2026-09-29T11:52:46Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Policy & safety",
-   "summary": "Mistral CEO Arthur Mensch criticized rivals’ AI safety arguments as the industry faces scrutiny after several AI agents took unauthorized actions.",
-   "via": "cnbc-tech"
-  },
-  {
-   "id": "531c75707fed45b0",
-   "title": "How OpenAI plans to make training AI models safer in three key ways",
-   "url": "https://indianexpress.com/article/technology/artificial-intelligence/how-openai-training-ai-safer-three-ways-10899259/",
-   "source": "The Indian Express",
-   "published_at": "2026-09-29T11:50:37Z",
-   "found_at": "2026-09-29T14:20:03Z",
-   "category": "Big Tech moves",
-   "summary": "",
-   "via": "indianexpress-tech"
-  },
-  {
-   "id": "c70c4b5b090798d7",
-   "title": "Anthropic warns of ‘catastrophic’ AI risks in its own IPO filing",
-   "url": "https://www.theverge.com/ai-artificial-intelligence/1001838/anthropic-ipo-prospectus-ai-safety-threat",
-   "source": "The Verge",
-   "published_at": "2026-09-29T11:48:27Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "As Anthropic gears up for its greatly anticipated public debut, a preview of the company's IPO filing reportedly details its mounting losses, leadership proposals to retain power, and how its AI development plans could \"further increase…",
-   "via": "verge-ai"
-  },
-  {
-   "id": "fd9bd4e69395045e",
-   "title": "Around 11 million US workers may face AI displacement",
-   "url": "https://www.semafor.com/article/09/29/2026/around-11-million-us-workers-may-face-ai-displacement",
-   "source": "Semafor",
-   "published_at": "2026-09-29T11:47:41Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Other",
-   "summary": "Voters globally have soured on AI because of existential risks the technology poses as well as concerns such as job losses and energy use.",
-   "via": "semafor"
-  },
-  {
-   "id": "05f0d5c305767d10",
-   "title": "EliseAI, which provides AI tools for health care and housing industries, raised $350M at a $4B valuation, up from $2.2B after raising $250M in August 2025",
-   "url": "https://fortune.com/2026/09/29/elise-ai-4-billion-valuation-funding-round-housing-unicorn-andreessen-bessemer/",
-   "source": "Fortune",
-   "published_at": "2026-09-29T11:45:01Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "",
-   "via": "techmeme"
-  },
-  {
-   "id": "c7aa3d4b3e5a795e",
-   "title": "AI firm EliseAI valued at $4 billion in latest funding round",
-   "url": "https://economictimes.indiatimes.com/tech/funding/ai-firm-eliseai-valued-at-4-billion-in-latest-funding-round/articleshow/134564594.cms",
-   "source": "The Economic Times",
-   "published_at": "2026-09-29T11:19:16Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Funding & startups",
-   "summary": "The funding round was led by Andreessen Horowitz and Bessemer Venture Partners, with participation from Ontario Teachers' Pension Plan, Sapphire Ventures and Navitas Capital.",
-   "via": "et-tech"
-  },
-  {
-   "id": "cf468ec39dd67f09",
-   "title": "OpenAI is adopting a structured \"safety case\" documentation framework modeled after industries like aviation and nuclear power to govern frontier RL training",
-   "url": "https://openai.com/index/towards-safety-cases-for-frontier-ai-training/",
-   "source": "OpenAI",
-   "published_at": "2026-09-29T11:15:01Z",
-   "found_at": "2026-09-29T14:15:50Z",
-   "category": "Policy & safety",
-   "summary": "",
-   "via": "techmeme"
-  },
-  {
-   "id": "228e4d16c7d3e8a4",
-   "title": "Revealed: the five-paragraph email OpenAI used to inform Australia about agent attack",
-   "url": "https://www.theguardian.com/technology/2026/sep/29/openai-apology-rogue-agent-hacked-medicare-australian-government-websites",
-   "source": "The Guardian",
-   "published_at": "2026-09-29T11:04:05Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Policy & safety",
-   "summary": "Executive to front parliamentary committee on AI as ministers reveal how brief message telling them about hack was signed off ‘best’ Follow our Australia news live blog for latest updates Get our breaking news email , free app or daily…",
-   "via": "guardian-ai"
   }
  ]
 }
