@@ -1,7 +1,7 @@
 {
- "scanned_at": "2026-09-29T14:21:01Z",
+ "scanned_at": "2026-09-29T14:34:09Z",
  "window_hours": 24,
- "new_this_scan": 0,
+ "new_this_scan": 3,
  "sources_ok": 39,
  "sources_total": 41,
  "deduped_against_editions": [
@@ -14,6 +14,39 @@
   "pipeline": "ai-daily-justin/1"
  },
  "items": [
+  {
+   "id": "e9006aa010057281",
+   "title": "Sources: OpenAI's ARR is nearing $70B, growing 70%+ since the beginning of Q3, with B2B revenue up 100%+; it added more consumer revenue in Q3 than all of 2025",
+   "url": "https://www.axios.com/2026/09/29/scoop-openais-annual-recurring-revenue-nears-70b",
+   "source": "Axios",
+   "published_at": "2026-09-29T14:25:40Z",
+   "found_at": "2026-09-29T14:34:09Z",
+   "category": "Big Tech moves",
+   "summary": "",
+   "via": "techmeme"
+  },
+  {
+   "id": "0f7e70d8bbfab33e",
+   "title": "Amazon Looks to Further Automate Media Buying With New Agentic Tools",
+   "url": "https://www.theinformation.com/briefings/amazon-looks-automate-media-buying-new-agentic-tools",
+   "source": "The Information",
+   "published_at": "2026-09-29T14:23:50Z",
+   "found_at": "2026-09-29T14:34:09Z",
+   "category": "Big Tech moves",
+   "summary": "Amazon introduced new AI-powered tools to help marketers buy ad inventory across the vast variety of media it sells, as it steps up its effort to strengthen its position in the ad tech world.",
+   "via": "theinformation"
+  },
+  {
+   "id": "482046899a068e21",
+   "title": "OpenAI says planned GPT-6.1 is too insecure to release",
+   "url": "https://arstechnica.com/ai/2026/09/openai-says-planned-gpt-6-1-is-too-insecure-to-release/",
+   "source": "Ars Technica",
+   "published_at": "2026-09-29T14:22:31Z",
+   "found_at": "2026-09-29T14:34:09Z",
+   "category": "Policy & safety",
+   "summary": "Similar performance, security tradeoffs also seen in current public models.",
+   "via": "ars-ai"
+  },
   {
    "id": "bd32bd3afe794052",
    "title": "Anthropic’s IPO pitch includes a warning about human extinction",
@@ -419,39 +452,6 @@
    "found_at": "2026-09-29T14:14:54Z",
    "category": "Policy & safety",
    "summary": "Executive to front parliamentary committee on AI as ministers reveal how brief message telling them about hack was signed off ‘best’ Follow our Australia news live blog for latest updates Get our breaking news email , free app or daily…",
-   "via": "guardian-ai"
-  },
-  {
-   "id": "d3e06d434d7c987e",
-   "title": "Microsoft’s Copilot Reboot Pins Focus on Business Customers",
-   "url": "https://www.bloomberg.com/news/newsletters/2026-09-29/microsoft-s-copilot-reboot-pins-focus-on-business-customers",
-   "source": "Bloomberg",
-   "published_at": "2026-09-29T11:02:01Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Big Tech moves",
-   "summary": "The new Copilot bundle is all about enhancing existing Office suite",
-   "via": "bloomberg-tech"
-  },
-  {
-   "id": "f617697ebfec2282",
-   "title": "Meta is expanding its AI agent Muse to small businesses",
-   "url": "https://techcrunch.com/2026/09/29/meta-is-expanding-its-ai-agent-muse-to-small-businesses/",
-   "source": "TechCrunch",
-   "published_at": "2026-09-29T11:01:06Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Big Tech moves",
-   "summary": "The tech giant says the agent can help owners run their business and find new customers.",
-   "via": "techcrunch-ai"
-  },
-  {
-   "id": "62f449fec1240ed2",
-   "title": "New campaign disclosures reveal how much American political campaigns spend on AI tools",
-   "url": "https://www.theguardian.com/technology/2026/sep/29/political-campaigns-ai-tools-spending",
-   "source": "The Guardian",
-   "published_at": "2026-09-29T11:00:49Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Tools & products",
-   "summary": "Though politicians are quiet about how they use AI, the book Rewiring Democracy examines how AI is starting to influence American politics New campaign finance disclosure data shines a light on which US political campaigns are using AI…",
    "via": "guardian-ai"
   }
  ]
