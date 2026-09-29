@@ -1,8 +1,8 @@
 {
- "scanned_at": "2026-09-29T14:20:03Z",
+ "scanned_at": "2026-09-29T14:20:11Z",
  "window_hours": 24,
- "new_this_scan": 2,
- "sources_ok": 40,
+ "new_this_scan": 0,
+ "sources_ok": 41,
  "sources_total": 41,
  "deduped_against_editions": [
   "2026-09-28",
