@@ -127,6 +127,38 @@ button,select,input{font:inherit;color:inherit}
 .footer p{margin:4px 0}
 .muted{opacity:.8}
 
+/* Just in (live scan, top of the News tab) */
+.justin{margin:16px 0 0;padding:12px 14px 6px;border-radius:18px;border:1px solid var(--border);background:var(--bg-elev);box-shadow:var(--shadow);min-width:0}
+.justin:not([hidden])+.hero{margin-top:12px}
+.ji-head{display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap}
+.ji-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.ji-live{width:9px;height:9px;border-radius:50%;background:var(--major);box-shadow:0 0 0 0 color-mix(in srgb,var(--major) 55%,transparent);animation:jipulse 2s infinite}
+@keyframes jipulse{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.ji-scanned{margin:0;font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+.ji-list{list-style:none;margin:6px 0 0;padding:0}
+.ji-item{padding:9px 0;border-top:1px solid var(--border);min-width:0}
+.ji-item:first-child{border-top:0}
+.ji-meta{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:center;gap:7px;font-size:12px;color:var(--text-faint);margin-bottom:3px;min-width:0}
+.ji-meta .sep{opacity:.6}
+.ji-new{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--accent-2)}
+.ji-new::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent-2)}
+.ji-cat{font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent);white-space:nowrap}
+[data-theme="light"] .ji-cat{color:color-mix(in srgb,var(--c) 62%,#000)}
+.ji-row{display:flex;align-items:flex-start;gap:6px;min-width:0}
+.ji-title{flex:1;min-width:0;font-size:14.5px;font-weight:650;line-height:1.33;letter-spacing:-.01em;text-decoration:none;overflow-wrap:anywhere}
+.ji-title:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.ji-exp{flex-shrink:0;width:28px;height:24px;margin-top:-1px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--text-faint);cursor:pointer;font-size:13px;line-height:1;transition:transform .15s}
+.ji-exp:hover{color:var(--text);background:var(--card-hover)}
+.ji-exp.open{transform:rotate(180deg)}
+.ji-sum{margin:5px 0 0;font-size:13.5px;line-height:1.45;color:var(--text-dim);overflow-wrap:anywhere}
+.ji-src{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--text-dim);text-decoration:none}
+.ji-meta time,.ji-meta .ji-new,.ji-meta .ji-cat{flex-shrink:0}
+.ji-src:hover{color:var(--text);text-decoration:underline}
+.ji-empty{margin:8px 0;font-size:13.5px;color:var(--text-dim)}
+.ji-more{display:block;width:100%;margin:2px 0 6px;height:38px;border-radius:10px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--text-dim)}
+.ji-more:hover{color:var(--text);background:var(--card-hover)}
+@media (min-width:720px){ .justin{padding:14px 20px 8px} .ji-title{font-size:15.5px} }
+
 /* Tabs (News | Markets) */
 .tabs{max-width:1080px;margin:0 auto;display:flex;gap:4px;padding:0 16px}
 .tab{flex:1;max-width:180px;height:38px;border:0;background:transparent;cursor:pointer;font-size:14.5px;font-weight:700;color:var(--text-faint);

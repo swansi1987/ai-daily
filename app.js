@@ -183,6 +183,7 @@
     }
     renderChips();
     renderFeed();
+    justIn.onEdition();
   }
 
   function renderChips() {
@@ -280,6 +281,121 @@
     const n = (state.category ? 1 : 0) + (state.majorOnly ? 1 : 0) + (state.videosOnly ? 1 : 0) + (state.q ? 1 : 0);
     fab.innerHTML = '&#9776; Filters' + (n ? ` <span class="n">${n}</span>` : '');
   }
+
+
+  // ---------- Just in (justin/latest.json, refreshed by a ~30-min scan; shown on the latest edition only) ----------
+  const justIn = (function () {
+    const JI = {
+      el: $('#justin'), list: $('#jiList'), more: $('#jiMore'), scanned: $('#jiScanned'), empty: $('#jiEmpty'),
+      data: null, lastFetch: 0, expanded: false, prevVisit: null, SHOW: 6, MAX: 30, REFRESH_MS: 5 * 60 * 1000,
+      KEY: 'aidaily-justin-visit',
+    };
+    if (!JI.el) return { onEdition() {} };
+    const normUrl = u => String(u || '').replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+    const isLatest = () => !!state.edition && state.dates[0] === state.date;
+    const newsTab = () => document.documentElement.getAttribute('data-tab') !== 'markets';
+
+    function beginVisit() {
+      // "NEW" = found by a scan after your previous visit. First visit ever: nothing is marked.
+      let v = null;
+      try { v = localStorage.getItem(JI.KEY); } catch (e) {}
+      JI.prevVisit = v ? Number(v) || null : null;
+    }
+    function markVisited() { try { localStorage.setItem(JI.KEY, String(Date.now())); } catch (e) {} }
+
+    function ago(iso) {
+      const t = Date.parse(iso);
+      if (isNaN(t)) return '';
+      const m = Math.max(0, Math.round((Date.now() - t) / 60000));
+      if (m < 2) return 'just now';
+      if (m < 60) return m + ' min ago';
+      const h = Math.floor(m / 60);
+      return h < 24 ? h + ' h ago' : Math.floor(h / 24) + ' d ago';
+    }
+    function scannedLabel(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      const hm = d.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
+      const day = d.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+      return 'Last scanned ' + (day === today ? '' : d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }) + ', ') + hm + ' IST';
+    }
+
+    function visibleItems() {
+      const cutoff = Date.now() - 24 * 3600 * 1000;
+      const inEdition = new Set(((state.edition && state.edition.items) || []).map(i => normUrl(i.source_url)));
+      return ((JI.data && JI.data.items) || []).filter(it =>
+        it && it.url && it.title && Date.parse(it.published_at) >= cutoff && !inEdition.has(normUrl(it.url))).slice(0, JI.MAX);
+    }
+
+    const SHORT_CAT = { 'Model releases': 'Models', 'Research & papers': 'Research', 'Tools & products': 'Tools', 'Big Tech moves': 'Big Tech',
+      'Open source': 'Open source', 'Funding & startups': 'Funding', 'Policy & safety': 'Policy', 'Hardware & chips': 'Chips' };
+    function itemHTML(it) {
+      const c = CAT_COLOR[it.category] || CAT_COLOR.Other;
+      const isNew = JI.prevVisit && Date.parse(it.found_at) > JI.prevVisit;
+      const sum = it.summary ? `<button class="ji-exp" type="button" aria-expanded="false" aria-label="Show summary"><span aria-hidden="true">&#9662;</span></button>` : '';
+      return `<li class="ji-item${isNew ? ' is-new' : ''}">
+        <div class="ji-meta">${isNew ? '<span class="ji-new" title="New since your last visit">NEW</span>' : ''}
+          ${SHORT_CAT[it.category] ? `<span class="ji-cat" style="--c:${c}" title="${esc(it.category)}">${esc(SHORT_CAT[it.category])}</span>` : ''}
+          <a class="ji-src" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener" tabindex="-1">${esc(it.source || 'Source')}</a>
+          <span class="sep" aria-hidden="true">·</span><time datetime="${esc(it.published_at)}" title="${esc(fmtPublished(it.published_at))}">${esc(ago(it.published_at))}</time></div>
+        <div class="ji-row"><a class="ji-title" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a>${sum}</div>
+        ${it.summary ? `<p class="ji-sum" hidden>${esc(it.summary)}</p>` : ''}
+      </li>`;
+    }
+
+    function render() {
+      const show = !!JI.data && isLatest();
+      JI.el.hidden = !show;
+      if (!show) return;
+      const items = visibleItems();
+      const n = JI.expanded ? items.length : Math.min(JI.SHOW, items.length);
+      JI.list.innerHTML = items.slice(0, n).map(itemHTML).join('');
+      JI.empty.hidden = items.length > 0;
+      JI.scanned.textContent = scannedLabel(JI.data.scanned_at);
+      JI.more.hidden = items.length <= JI.SHOW;
+      JI.more.setAttribute('aria-expanded', String(JI.expanded));
+      JI.more.textContent = JI.expanded ? 'Show less' : `Show more (${items.length - JI.SHOW})`;
+    }
+
+    async function refresh() {
+      JI.lastFetch = Date.now();
+      try {
+        const d = await getJSON('justin/latest.json');
+        if (d && Array.isArray(d.items)) JI.data = d;
+      } catch (e) { /* not published yet / offline: keep whatever we had (section stays hidden if nothing) */ }
+      render();
+      markVisited();
+    }
+
+    JI.more.addEventListener('click', () => {
+      JI.expanded = !JI.expanded; render();
+      if (!JI.expanded) JI.el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    JI.list.addEventListener('click', e => {
+      const b = e.target.closest('.ji-exp'); if (!b) return;
+      const p = b.closest('.ji-item').querySelector('.ji-sum'); if (!p) return;
+      p.hidden = !p.hidden; b.setAttribute('aria-expanded', String(!p.hidden)); b.classList.toggle('open', !p.hidden);
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible' || Date.now() - JI.lastFetch < JI.REFRESH_MS) return;
+      beginVisit(); refresh(); // back after 5+ min: counts as a new visit for the NEW dots
+    });
+    setInterval(() => {
+      if (document.visibilityState === 'visible' && newsTab()) refresh(); else render();
+    }, JI.REFRESH_MS);
+
+    const tabBtn = $('#tab-news');
+    if (tabBtn) tabBtn.addEventListener('click', () => { if (Date.now() - JI.lastFetch >= JI.REFRESH_MS) refresh(); });
+
+    beginVisit();
+    let started = false;
+    return {
+      onEdition() {
+        if (!started) { started = true; refresh(); } else render();
+      },
+    };
+  })();
 
   // PWA service worker (only when served over http/https)
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {

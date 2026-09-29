@@ -46,6 +46,15 @@
 
   <main class="container">
    <div id="newsView" class="view" role="tabpanel" aria-labelledby="tab-news">
+    <section class="justin" id="justin" aria-labelledby="justinTitle" hidden>
+      <div class="ji-head">
+        <h2 id="justinTitle"><span class="ji-live" aria-hidden="true"></span>Just in</h2>
+        <p class="ji-scanned" id="jiScanned"></p>
+      </div>
+      <ol class="ji-list" id="jiList" aria-live="polite"></ol>
+      <p class="ji-empty" id="jiEmpty" hidden>No new AI stories in the last few hours. The next scan runs within about 30 minutes.</p>
+      <button class="ji-more" id="jiMore" type="button" aria-expanded="false" hidden></button>
+    </section>
     <section class="hero" aria-labelledby="editionTitle">
       <p class="eyebrow" id="editionDate">&nbsp;</p>
       <h1 id="editionTitle">Today in 60 seconds</h1>
