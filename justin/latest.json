@@ -1,7 +1,7 @@
 {
- "scanned_at": "2026-09-29T14:14:54Z",
+ "scanned_at": "2026-09-29T14:15:50Z",
  "window_hours": 24,
- "new_this_scan": 40,
+ "new_this_scan": 1,
  "sources_ok": 39,
  "sources_total": 41,
  "deduped_against_editions": [
@@ -378,6 +378,17 @@
    "via": "et-tech"
   },
   {
+   "id": "cf468ec39dd67f09",
+   "title": "OpenAI is adopting a structured \"safety case\" documentation framework modeled after industries like aviation and nuclear power to govern frontier RL training",
+   "url": "https://openai.com/index/towards-safety-cases-for-frontier-ai-training/",
+   "source": "OpenAI",
+   "published_at": "2026-09-29T11:15:01Z",
+   "found_at": "2026-09-29T14:15:50Z",
+   "category": "Policy & safety",
+   "summary": "",
+   "via": "techmeme"
+  },
+  {
    "id": "228e4d16c7d3e8a4",
    "title": "Revealed: the five-paragraph email OpenAI used to inform Australia about agent attack",
    "url": "https://www.theguardian.com/technology/2026/sep/29/openai-apology-rogue-agent-hacked-medicare-australian-government-websites",
@@ -442,17 +453,6 @@
    "category": "Model releases",
    "summary": "When customers talk about AI costs, the conversation usually starts with token prices and ends with access to the latest, most capable model in the cloud. Do they always need that level of capability?",
    "via": "mittr-ai"
-  },
-  {
-   "id": "81742afa544e7a03",
-   "title": "Timnit Gebru Believes There Is No ‘Existential Threat’ From AI",
-   "url": "https://www.wired.com/story/the-big-interview-podcast-timnit-gebru/",
-   "source": "WIRED",
-   "published_at": "2026-09-29T10:30:00Z",
-   "found_at": "2026-09-29T14:14:54Z",
-   "category": "Other",
-   "summary": "One of AI’s fiercest critics believes the doom talk is about founders making money, not saving humanity.",
-   "via": "wired-ai"
   }
  ]
 }
