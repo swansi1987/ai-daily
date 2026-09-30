@@ -14,7 +14,7 @@
     body: $('#mktBody'), status: $('#mktStatus'), sync: $('#syncBtn'), date: $('#mktDate'), err: $('#mktError'),
     sel: $('#mktDateSelect'), prev: $('#mktPrev'), next: $('#mktNext'),
   };
-  const st = { dates: [], date: null, snap: null, loaded: false, syncing: false, lastSync: 0, isLatest: true };
+  const st = { dates: [], date: null, snap: null, loaded: false, syncing: false, lastSync: 0, lastSyncOK: 0, isLatest: true };
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -236,6 +236,9 @@
     els.sync.classList.add('busy'); els.sync.disabled = true; els.sync.querySelector('.sync-label').textContent = 'Syncing';
     setStatus('Fetching the latest quotes…');
     els.err.hidden = true;
+    // Quotes already on screen from an earlier successful Sync (today's view). If this Sync can't reach any live feed,
+    // put them back instead of dropping to an older saved snapshot.
+    const shown = st.isLatest && st.lastSyncOK && st.snap ? { snap: st.snap, at: st.lastSyncOK } : null;
     let snapErr = null;
     try {
       await loadIndex();
@@ -276,7 +279,12 @@
     }
     const now = Math.floor(Date.now() / 1000);
     st.lastSync = Date.now();
-    if (!snap) setStatus('Sync failed. Check your connection and try again.', 'bad');
+    if (liveOK > 0) st.lastSyncOK = st.lastSync;
+    const keepShown = liveOK === 0 && shown && (!snap || (snap.date === shown.snap.date && Date.parse(snap.generated_at) < shown.at));
+    if (keepShown) {
+      st.snap = shown.snap; st.date = shown.snap.date; st.isLatest = true; updateNav(); render();
+      setStatus(`Sync failed: couldn't reach the data feeds (offline?). Still showing quotes from <b>${esc(fmtTime(Math.floor(shown.at / 1000)))} IST</b>.`, 'bad');
+    } else if (!snap) setStatus('Sync failed. Check your connection and try again.', 'bad');
     else if (liveOK === 0 && snapErr) {
       const g = Date.parse(snap.generated_at) / 1000;
       setStatus(`Sync failed: couldn't reach the data feeds (offline?). Still showing data from <b>${esc(fmtTime(g))} IST</b>.`, 'bad');

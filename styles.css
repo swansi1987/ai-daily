@@ -135,6 +135,8 @@ button,select,input{font:inherit;color:inherit}
 .ji-live{width:9px;height:9px;border-radius:50%;background:var(--major);box-shadow:0 0 0 0 color-mix(in srgb,var(--major) 55%,transparent);animation:jipulse 2s infinite}
 @keyframes jipulse{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
 .ji-scanned{margin:0;font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+.justin.is-late .ji-live{animation:none;background:var(--minor)}
+.justin.is-late .ji-scanned{color:var(--notable);font-weight:600}
 .ji-list{list-style:none;margin:6px 0 0;padding:0}
 .ji-item{padding:9px 0;border-top:1px solid var(--border);min-width:0}
 .ji-item:first-child{border-top:0}

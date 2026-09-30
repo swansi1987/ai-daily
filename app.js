@@ -147,8 +147,24 @@
       renderEdition();
     } catch (e) {
       els.error.hidden = false;
-      els.error.textContent = 'Could not load the edition. If you opened index.html directly from disk, serve the folder with any static server (e.g. "python3 -m http.server"). (' + e.message + ')';
-      els.highlights.innerHTML = '';
+      if (state.edition) {
+        // Keep showing the edition that is already on screen, and put the picker/URL back to match it
+        // (otherwise the header says e.g. "Sat, 26 Sept" while the page still shows the 29th).
+        els.dateSelect.value = state.date;
+        if (location.hash.replace('#', '') !== state.date) history.replaceState(null, '', '#' + state.date);
+        updateNav();
+        els.error.textContent = (navigator.onLine === false
+          ? "You're offline and the " + fmtShortDate(date) + " edition isn't saved on this device yet."
+          : "Couldn't load the " + fmtShortDate(date) + ' edition (' + e.message + ').')
+          + ' Still showing ' + fmtShortDate(state.date) + '.';
+        els.error.scrollIntoView({ block: 'nearest' });
+      } else {
+        els.error.textContent = location.protocol === 'file:'
+          ? 'Could not load the edition. Serve this folder with any static server (e.g. "python3 -m http.server") instead of opening index.html from disk. (' + e.message + ')'
+          : (navigator.onLine === false ? "You're offline and no edition is saved on this device yet. Connect and pull down to refresh."
+            : "Couldn't load today's edition (" + e.message + '). Pull down or try again in a minute.');
+        els.highlights.innerHTML = '';
+      }
     }
   }
 
@@ -160,7 +176,11 @@
   els.prev.addEventListener('click', () => { const i = state.dates.indexOf(state.date); if (i < state.dates.length - 1) loadEdition(state.dates[i + 1]); });
   els.next.addEventListener('click', () => { const i = state.dates.indexOf(state.date); if (i > 0) loadEdition(state.dates[i - 1]); });
   els.dateSelect.addEventListener('change', () => loadEdition(els.dateSelect.value));
-  window.addEventListener('hashchange', () => { const d = location.hash.replace('#', ''); if (d && d !== state.date && state.dates.includes(d)) loadEdition(d); });
+  window.addEventListener('hashchange', () => {
+    const d = location.hash.replace('#', '');
+    if (d && d !== state.date && state.dates.includes(d)) loadEdition(d);
+    else if (state.date && d !== state.date) history.replaceState(null, '', '#' + state.date); // no edition for that date: keep URL = what's shown
+  });
 
   // ---------- render ----------
   function renderEdition() {
@@ -274,9 +294,13 @@
   fab.className = 'to-filters'; fab.type = 'button'; fab.innerHTML = '&#9776; Filters';
   fab.addEventListener('click', () => { els.controls.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => els.search.focus({ preventScroll: true }), 400); });
   document.body.appendChild(fab);
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([en]) => fab.classList.toggle('show', !en.isIntersecting && en.boundingClientRect.top < 0)).observe(els.controls);
-  }
+  // Scroll-driven rather than IntersectionObserver: IO only fires on threshold crossings, so a jump that takes the
+  // filter bar from below the viewport straight to above it (fast fling, scroll restore, long page) never showed the button.
+  let fabRaf = 0;
+  const syncFab = () => { fabRaf = 0; fab.classList.toggle('show', els.controls.getBoundingClientRect().bottom < 0); };
+  const queueFab = () => { if (!fabRaf) fabRaf = requestAnimationFrame(syncFab); };
+  window.addEventListener('scroll', queueFab, { passive: true });
+  window.addEventListener('resize', queueFab);
   function updateFab() {
     const n = (state.category ? 1 : 0) + (state.majorOnly ? 1 : 0) + (state.videosOnly ? 1 : 0) + (state.q ? 1 : 0);
     fab.innerHTML = '&#9776; Filters' + (n ? ` <span class="n">${n}</span>` : '');
@@ -321,6 +345,20 @@
       return 'Last scanned ' + (day === today ? '' : d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }) + ', ') + hm + ' IST';
     }
 
+    // Scans run every ~30 min from 06:10 to 23:40 IST (none overnight). If the newest scan is older than the schedule
+    // allows (e.g. GitHub dropped/delayed the scheduled runs), say so instead of presenting old items as "just in".
+    function scanIsLate(iso) {
+      const t = Date.parse(iso);
+      if (isNaN(t)) return false;
+      const now = Date.now();
+      const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false })
+        .formatToParts(new Date(now)).reduce((o, x) => (o[x.type] = x.value, o), {});
+      const istMin = (+p.hour % 24) * 60 + +p.minute;
+      // Overnight / first slot not due yet: the last scheduled scan was ~23:40 IST, i.e. (istMin + 20) minutes ago.
+      const allowedMin = istMin < 7 * 60 ? istMin + 20 + 90 : 90;
+      return now - t > allowedMin * 60000;
+    }
+
     function visibleItems() {
       const cutoff = Date.now() - 24 * 3600 * 1000;
       const inEdition = new Set(((state.edition && state.edition.items) || []).map(i => normUrl(i.source_url)));
@@ -352,7 +390,9 @@
       const n = JI.expanded ? items.length : Math.min(JI.SHOW, items.length);
       JI.list.innerHTML = items.slice(0, n).map(itemHTML).join('');
       JI.empty.hidden = items.length > 0;
-      JI.scanned.textContent = scannedLabel(JI.data.scanned_at);
+      const late = scanIsLate(JI.data.scanned_at);
+      JI.scanned.textContent = scannedLabel(JI.data.scanned_at) + (late ? ' · updates delayed' : '');
+      JI.el.classList.toggle('is-late', late);
       JI.more.hidden = items.length <= JI.SHOW;
       JI.more.setAttribute('aria-expanded', String(JI.expanded));
       JI.more.textContent = JI.expanded ? 'Show less' : `Show more (${items.length - JI.SHOW})`;
