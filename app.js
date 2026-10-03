@@ -310,8 +310,8 @@
   // ---------- Just in (justin/latest.json, refreshed by a ~30-min scan; shown on the latest edition only) ----------
   const justIn = (function () {
     const JI = {
-      el: $('#justin'), list: $('#jiList'), more: $('#jiMore'), scanned: $('#jiScanned'), empty: $('#jiEmpty'),
-      data: null, lastFetch: 0, expanded: false, prevVisit: null, SHOW: 6, MAX: 30, REFRESH_MS: 5 * 60 * 1000,
+      el: $('#justin'), box: $('#jiBox'), list: $('#jiList'), hint: $('#jiHint'), scanned: $('#jiScanned'), empty: $('#jiEmpty'),
+      data: null, lastFetch: 0, prevVisit: null, SHOW: 3, PEEK: 7, MAX: 30, REFRESH_MS: 5 * 60 * 1000, fitW: 0,
       KEY: 'aidaily-justin-visit',
     };
     if (!JI.el) return { onEdition() {} };
@@ -382,20 +382,48 @@
       </li>`;
     }
 
+    // All items (newest first) live in a scroll box sized to show exactly the newest SHOW (3); the rest scroll inside it.
+    // The height is measured from the first 3 rendered items, so it follows font size, wrapping, viewport and theme.
+    function fit() {
+      const lis = JI.list.children;
+      const w = JI.list.clientWidth;
+      if (!w) return; // hidden (Markets tab / not the latest edition): ResizeObserver refits once it is visible
+      JI.fitW = w;
+      const scrolls = lis.length > JI.SHOW;
+      JI.box.classList.toggle('scrolls', scrolls);
+      if (!scrolls) { JI.list.style.maxHeight = ''; JI.list.removeAttribute('tabindex'); updateFade(); return; }
+      const last = lis[JI.SHOW - 1];
+      // + PEEK px: just the 4th item's top padding (no text), so the bottom fade sits below the 3rd item's text.
+      const h = Math.ceil(last.offsetTop + last.offsetHeight) + JI.PEEK; // offsetParent is the (position:relative) list
+      if (JI.list.style.maxHeight !== h + 'px') JI.list.style.maxHeight = h + 'px';
+      JI.list.tabIndex = 0; // keyboard scrolling
+      updateFade();
+    }
+    function updateFade() {
+      const l = JI.list;
+      const left = l.scrollHeight - l.clientHeight - l.scrollTop;
+      const more = JI.box.classList.contains('scrolls') && left > 2;
+      JI.box.classList.toggle('more', more);
+      const hidden = Math.max(0, JI.list.children.length - JI.SHOW);
+      JI.hint.hidden = !hidden;
+      if (hidden) JI.hint.textContent = more ? `Scroll for ${hidden} more` : `${JI.list.children.length} stories`;
+    }
+
     function render() {
       const show = !!JI.data && isLatest();
       JI.el.hidden = !show;
       if (!show) return;
       const items = visibleItems();
-      const n = JI.expanded ? items.length : Math.min(JI.SHOW, items.length);
-      JI.list.innerHTML = items.slice(0, n).map(itemHTML).join('');
+      const top = JI.list.scrollTop;
+      JI.list.innerHTML = items.map(itemHTML).join('');
       JI.empty.hidden = items.length > 0;
+      JI.box.hidden = !items.length;
       const late = scanIsLate(JI.data.scanned_at);
       JI.scanned.textContent = scannedLabel(JI.data.scanned_at) + (late ? ' · updates delayed' : '');
       JI.el.classList.toggle('is-late', late);
-      JI.more.hidden = items.length <= JI.SHOW;
-      JI.more.setAttribute('aria-expanded', String(JI.expanded));
-      JI.more.textContent = JI.expanded ? 'Show less' : `Show more (${items.length - JI.SHOW})`;
+      fit();
+      JI.list.scrollTop = top; // a periodic refresh must not yank the box back to the top while you read
+      updateFade();
     }
 
     async function refresh() {
@@ -408,15 +436,21 @@
       markVisited();
     }
 
-    JI.more.addEventListener('click', () => {
-      JI.expanded = !JI.expanded; render();
-      if (!JI.expanded) JI.el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    });
     JI.list.addEventListener('click', e => {
       const b = e.target.closest('.ji-exp'); if (!b) return;
-      const p = b.closest('.ji-item').querySelector('.ji-sum'); if (!p) return;
+      const li = b.closest('.ji-item'), p = li.querySelector('.ji-sum'); if (!p) return;
       p.hidden = !p.hidden; b.setAttribute('aria-expanded', String(!p.hidden)); b.classList.toggle('open', !p.hidden);
+      // The box keeps its height; scroll inside it (never the page) so the opened summary is in view.
+      const l = JI.list, over = li.offsetTop + li.offsetHeight - (l.scrollTop + l.clientHeight);
+      if (!p.hidden && over > 0) l.scrollTop += Math.min(over, li.offsetTop - l.scrollTop);
+      updateFade();
     });
+    JI.list.addEventListener('scroll', updateFade, { passive: true });
+    // Refit when the width changes (rotation, resize, becoming visible) or the theme/fonts change.
+    if (window.ResizeObserver) new ResizeObserver(() => { if (JI.list.clientWidth !== JI.fitW) fit(); }).observe(JI.list);
+    window.addEventListener('resize', fit, { passive: true });
+    new MutationObserver(fit).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-tab'] });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState !== 'visible' || Date.now() - JI.lastFetch < JI.REFRESH_MS) return;
       beginVisit(); refresh(); // back after 5+ min: counts as a new visit for the NEW dots

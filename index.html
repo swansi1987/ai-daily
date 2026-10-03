@@ -51,9 +51,11 @@
         <h2 id="justinTitle"><span class="ji-live" aria-hidden="true"></span>Just in</h2>
         <p class="ji-scanned" id="jiScanned"></p>
       </div>
-      <ol class="ji-list" id="jiList" aria-live="polite"></ol>
+      <div class="ji-box" id="jiBox">
+        <ol class="ji-list" id="jiList" aria-live="polite" aria-label="Just in stories, newest first"></ol>
+      </div>
+      <p class="ji-hint" id="jiHint" aria-hidden="true" hidden></p>
       <p class="ji-empty" id="jiEmpty" hidden>No new AI stories in the last few hours. The next scan runs within about 30 minutes.</p>
-      <button class="ji-more" id="jiMore" type="button" aria-expanded="false" hidden></button>
     </section>
     <section class="hero" aria-labelledby="editionTitle">
       <p class="eyebrow" id="editionDate">&nbsp;</p>
