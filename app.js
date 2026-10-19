@@ -680,14 +680,30 @@
     const raActive = () => RA.on && !reducedMotion.matches && curTab() === 'reels' && document.visibilityState === 'visible' && cards().length > 1;
     const raBar = (i, f) => { const c = cards()[i], b = c && c.querySelector('.reel-prog i'); if (b) b.style.transform = `scaleX(${Math.max(0, Math.min(1, f))})`; };
     const autoBtn = () => `<button type="button" class="reel-auto" aria-pressed="${!RA.on}" aria-label="${RA.on ? 'Pause auto-scroll' : 'Resume auto-scroll'}">${PAUSE_SVG}${PLAY_SVG}</button>`;
+    const normT = t => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const normU = u => String(u || '').replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+    const istTime = iso => { const d = new Date(iso); if (isNaN(d)) return '';
+      try { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }) + ' IST'; } catch (e) { return ''; } };
+    // Just in first (newest first), then the edition; de-duplicated by URL / title (the edition copy wins).
     function items() {
+      const seen = new Set(), out = [];
+      const add = (x, url, title) => {
+        const u = normU(url), t = normT(title);
+        if ((u && seen.has('u:' + u)) || (t && seen.has('t:' + t))) return false;
+        if (u) seen.add('u:' + u); if (t) seen.add('t:' + t);
+        x.k = u ? 'u:' + u : 't:' + t; return true;
+      };
       const ed = feedItems().map(it => ({ ji: false, it }));
-      return isFiltered() ? ed : ed.concat(justIn.items().map(it => ({ ji: true, it })));
+      ed.forEach(x => add(x, x.it.source_url, x.it.headline));
+      if (isFiltered()) return ed;
+      const ji = justIn.items().slice().sort((a, b) => (Date.parse(b.published_at) || 0) - (Date.parse(a.published_at) || 0))
+        .map(it => ({ ji: true, it })).filter(x => add(x, x.it.url, x.it.title));
+      return ji.concat(ed);
     }
     function reelHTML(x, i, n, edLabel) {
       const it = x.it;
       const title = x.ji ? it.title : it.headline, url = x.ji ? it.url : it.source_url, src = x.ji ? it.source : it.source_name;
-      const when = x.ji ? justIn.ago(it.published_at) : (timeAgo(it.published_at) || fmtPublished(it.published_at));
+      const when = x.ji ? [istTime(it.published_at), justIn.ago(it.published_at)].filter(Boolean).join(' · ') : (timeAgo(it.published_at) || fmtPublished(it.published_at));
       const cat = it.category || 'Other', c = CAT_COLOR[cat] || CAT_COLOR.Other;
       const imp = !x.ji && it.importance && it.importance !== 'Minor' ? it.importance : '';
       const yt = !x.ji && youtubeId(it.video_url);
@@ -695,11 +711,11 @@
       const img = (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : '') || httpUrl(it.image_url);
       const video = !x.ji ? httpUrl(it.video_url) : '';
       const href = esc(safeUrl(url));
-      return `<article class="reel${img ? ' has-img' : ''}" style="--c:${c}" data-i="${i}" aria-roledescription="reel" aria-label="${esc(`Story ${i + 1} of ${n}`)}">
+      return `<article class="reel${img ? ' has-img' : ''}" style="--c:${c}" data-i="${i}" data-k="${esc(x.k || '')}"${x.ji ? ' data-ji="1"' : ''} aria-roledescription="reel" aria-label="${esc(`Story ${i + 1} of ${n}`)}">
         ${img ? `<div class="reel-bg" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>` : ''}
         <div class="reel-frame">
           <div class="reel-prog" aria-hidden="true"><i></i></div>
-          <div class="reel-top"><span class="reel-brand">${x.ji ? 'Just in' : esc(edLabel)}</span><span class="reel-top-r">${autoBtn()}<span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></span></div>
+          <div class="reel-top"><span class="reel-brand">${x.ji ? 'AI Daily · Just in' : esc(edLabel)}</span><span class="reel-top-r">${autoBtn()}<span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></span></div>
           ${img ? `<a class="reel-media" href="${esc(video || safeUrl(url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${video ? '<span class="play"><span></span></span>' : ''}</a>` : ''}
           <div class="reel-main">
             <div class="reel-text">
@@ -739,11 +755,26 @@
       R.idx = Math.max(0, Math.min(cs.length - 1, i));
       window.scrollTo({ top: cs[R.idx].offsetTop, behavior: smooth ? 'smooth' : 'auto' });
     }
+    let lastUser = 0, pend = 0, touching = 0;
+    const busy = () => touching > 0 || Date.now() - lastUser < 1200;
+    window.addEventListener('touchstart', e => { touching = e.touches.length; }, { passive: true, capture: true });
+    ['touchend', 'touchcancel'].forEach(t => window.addEventListener(t, e => { touching = e.touches.length; lastUser = Date.now(); }, { passive: true, capture: true }));
     function update() {
       const key = state.date + '|' + isFiltered();
-      if (key !== R.key) { R.key = key; R.idx = 0; }
+      if (key !== R.key) { R.key = key; R.idx = 0; R.dirty = true; if (curTab() === 'reels') { render(); go(0, false); } return; }
       R.dirty = true;
-      if (curTab() === 'reels') { const i = R.idx; render(); go(i, false); }
+      if (curTab() !== 'reels') return;
+      // Keep the card you are on: re-anchor by story key. While you are scrolling, only refresh the "i / N" counters.
+      const cs = cards(), curK = cs[current()] && cs[current()].dataset.k;
+      const list = items(), pos = new Map(list.map((x, i) => [x.k, i]));
+      if (busy()) {
+        [...cs].forEach(c => { const i = pos.get(c.dataset.k), e = c.querySelector('.reel-count'); if (e && i != null) e.textContent = `${i + 1} / ${list.length}`; });
+        clearTimeout(pend); pend = setTimeout(update, 1300); return;
+      }
+      render();
+      // On the first card the newest story stays on top; anywhere else you stay on the story you were reading.
+      const at0 = current() === 0, ni = !at0 && curK != null && pos.has(curK) ? pos.get(curK) : at0 ? 0 : Math.min(R.idx, list.length - 1);
+      go(ni, false); RA.card = R.idx;
     }
     function open() {
       if (R.dirty) render();
@@ -818,8 +849,8 @@
     }
     const raHold = () => { RA.hold = Date.now() + IDLE_MS; RA.elapsed = 0; };
     ['touchstart', 'touchmove', 'wheel', 'pointerdown', 'keydown'].forEach(t =>
-      window.addEventListener(t, () => { if (curTab() === 'reels') raHold(); }, { passive: true, capture: true }));
-    window.addEventListener('scroll', () => { if (curTab() === 'reels' && Date.now() > RA.progUntil) raHold(); }, { passive: true });
+      window.addEventListener(t, () => { if (curTab() === 'reels') { lastUser = Date.now(); raHold(); } }, { passive: true, capture: true }));
+    window.addEventListener('scroll', () => { if (curTab() === 'reels' && Date.now() > RA.progUntil) { lastUser = Date.now(); raHold(); } }, { passive: true });
     R.list.addEventListener('click', e => {
       const b = e.target.closest('.reel-auto'); if (!b) return;
       e.preventDefault();
