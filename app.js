@@ -359,14 +359,18 @@
     const imp = (item.importance || 'Minor');
     const ago = timeAgo(item.published_at);
     const thumb = yt ? `<a class="thumb" href="${esc(safeUrl(item.video_url))}" target="_blank" rel="noopener" aria-label="Watch video: ${esc(item.headline)}">
-        <img loading="lazy" src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt=""><span class="play"><span></span></span></a>` : '';
+        <img loading="lazy" src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" referrerpolicy="no-referrer"><span class="play"><span></span></span></a>` : '';
+    // small preview from the article (og:image) when there is no video thumbnail; dropped if it fails to load
+    const pic = !yt && httpUrl(item.image_url);
+    const head = `<h2><a href="${esc(safeUrl(item.source_url))}" target="_blank" rel="noopener">${esc(item.headline)}</a></h2>`;
+    const headHTML = pic ? `<div class="card-head">${head}<a class="card-img" href="${esc(safeUrl(item.source_url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(pic)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a></div>` : head;
     const watch = item.video_url ? `<a class="btn watch" href="${esc(safeUrl(item.video_url))}" target="_blank" rel="noopener">Watch on ${esc(platformLabel(item))}</a>` : '';
     const tags = (item.tags || []).slice(0, 5).map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join('');
     return `<article class="card ${imp === 'Major' ? 'is-major' : ''}" style="--c:${c}" id="${esc(item.id)}">
       ${thumb}
       <div class="card-body">
         <div class="badges"><button class="cat" data-cat="${esc(item.category)}">${esc(item.category)}</button><span class="imp ${imp.toLowerCase()}">${esc(imp)}</span>${shareBtn(storyShare(item.headline, item.summary, item.source_url), 'Share: ' + item.headline)}</div>
-        <h2><a href="${esc(safeUrl(item.source_url))}" target="_blank" rel="noopener">${esc(item.headline)}</a></h2>
+        ${headHTML}
         ${item.summary ? `<p class="summary">${esc(item.summary)}</p>` : ''}
         ${tags ? `<div class="tags">${tags}</div>` : ''}
         <div class="meta"><a class="src" href="${esc(safeUrl(item.source_url))}" target="_blank" rel="noopener">${esc(item.source_name || 'Source')} ↗</a>
@@ -396,6 +400,10 @@
     if (reelsApi) reelsApi.update();
   }
 
+  // article previews that fail to load (or are tracking-pixel sized) are removed; the headline takes the full width
+  const dropCardImg = img => { const a = img.closest('.card-img'); if (a) a.remove(); };
+  els.feed.addEventListener('error', e => { if (e.target.tagName === 'IMG') dropCardImg(e.target); }, true);
+  els.feed.addEventListener('load', e => { const t = e.target; if (t.tagName === 'IMG' && t.naturalWidth < 40) dropCardImg(t); }, true);
   els.feed.addEventListener('click', e => {
     const cat = e.target.closest('.cat');
     if (cat) { state.category = cat.dataset.cat; renderChips(); renderFeed(); window.scrollTo({ top: els.controls.offsetTop - 60, behavior: 'smooth' }); return; }
@@ -623,14 +631,15 @@
       const cat = it.category || 'Other', c = CAT_COLOR[cat] || CAT_COLOR.Other;
       const imp = !x.ji && it.importance && it.importance !== 'Minor' ? it.importance : '';
       const yt = !x.ji && youtubeId(it.video_url);
-      const img = httpUrl(it.image_url) || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : '');
+      // video thumbnail first (it is what Play opens), else the article's preview image (editions + Just in)
+      const img = (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : '') || httpUrl(it.image_url);
       const video = !x.ji ? httpUrl(it.video_url) : '';
       const href = esc(safeUrl(url));
       return `<article class="reel${img ? ' has-img' : ''}" style="--c:${c}" data-i="${i}" aria-roledescription="reel" aria-label="${esc(`Story ${i + 1} of ${n}`)}">
-        ${img ? `<div class="reel-bg" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async"></div>` : ''}
+        ${img ? `<div class="reel-bg" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>` : ''}
         <div class="reel-frame">
           <div class="reel-top"><span class="reel-brand">${x.ji ? 'Just in' : esc(edLabel)}</span><span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></div>
-          ${img ? `<a class="reel-media" href="${esc(video || safeUrl(url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async">${video ? '<span class="play"><span></span></span>' : ''}</a>` : ''}
+          ${img ? `<a class="reel-media" href="${esc(video || safeUrl(url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${video ? '<span class="play"><span></span></span>' : ''}</a>` : ''}
           <div class="reel-main">
             <div class="reel-text">
               <div class="reel-badges"><span class="reel-cat">${esc(cat)}</span>${imp ? `<span class="imp ${imp.toLowerCase()}">${esc(imp)}</span>` : ''}${x.ji ? '<span class="reel-ji">Just in</span>' : ''}</div>
@@ -706,13 +715,14 @@
       wheelLock = now + 600;
       go(current() + (e.deltaY > 0 ? 1 : -1), true);
     }, { passive: false });
-    // Thumbnails that fail (offline, removed video): fall back to the gradient card.
-    R.list.addEventListener('error', e => {
-      if (e.target.tagName !== 'IMG') return;
-      const reel = e.target.closest('.reel'); if (!reel) return;
+    // Images that fail (offline, hotlink-blocked, removed) or are tracking-pixel sized: fall back to the gradient card.
+    const dropImg = img => {
+      const reel = img.closest('.reel'); if (!reel) return;
       reel.classList.remove('has-img');
       reel.querySelectorAll('.reel-bg,.reel-media').forEach(n => n.remove());
-    }, true);
+    };
+    R.list.addEventListener('error', e => { if (e.target.tagName === 'IMG') dropImg(e.target); }, true);
+    R.list.addEventListener('load', e => { const t = e.target; if (t.tagName === 'IMG' && t.naturalWidth < 40) dropImg(t); }, true);
     R.reset.addEventListener('click', () => { resetFilters(); });
     window.addEventListener('resize', () => { if (curTab() === 'reels') go(R.idx, false); });
     return { open, update, go };
