@@ -35,6 +35,44 @@
   };
 
   const state = { dates: [], date: null, edition: null, category: null, majorOnly: false, videosOnly: false, q: '' };
+  let reelsApi = null; // set once the Reels module below is ready
+
+  // ---------- tabs (bottom bar: News | Reels | Markets) + #hash routing ----------
+  // Hash: #<date> on News/Markets, #reels/<date> on Reels. Entering Reels pushes a history entry, so Back
+  // (browser or the Android app's back button) returns to News.
+  const root = document.documentElement;
+  const curTab = () => root.getAttribute('data-tab') || 'news';
+  const scrollMem = {};
+  let pendingTab = null;
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; // tabs restore their own scroll position
+  function hashInfo() {
+    const h = location.hash.replace(/^#/, '');
+    return { reels: /^reels\b/.test(h), date: (h.match(/\d{4}-\d{2}-\d{2}/) || [])[0] || null };
+  }
+  const hashFor = date => '#' + (curTab() === 'reels' ? 'reels' + (date ? '/' + date : '') : (date || ''));
+  function setHash(date) { const h = hashFor(date); if (location.hash !== h) history.replaceState(history.state, '', h); }
+  function setTab(tab, save) {
+    const prev = curTab();
+    if (prev === tab) return;
+    scrollMem[prev] = window.scrollY;
+    root.setAttribute('data-tab', tab);
+    document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+    if (save && tab !== 'reels') { try { localStorage.setItem('aidaily-tab', tab); } catch (e) {} }
+    if (tab === 'reels') { if (reelsApi) reelsApi.open(); } else window.scrollTo(0, scrollMem[tab] || 0);
+    document.dispatchEvent(new CustomEvent('aidaily:tab', { detail: { tab, prev } }));
+  }
+  function goTab(tab) {
+    const prev = curTab();
+    if (tab === prev) { if (tab === 'reels' && reelsApi) reelsApi.go(0, true); else window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (tab === 'reels') { history.pushState({ aidailyReels: 1 }, '', '#reels' + (state.date ? '/' + state.date : '')); setTab('reels', false); return; }
+    if (prev === 'reels' && history.state && history.state.aidailyReels) { pendingTab = tab; history.back(); return; } // pop our entry
+    setTab(tab, true);
+    setHash(state.date);
+  }
+  document.querySelectorAll('.tab').forEach(b => {
+    b.setAttribute('aria-selected', String(b.dataset.tab === curTab()));
+    b.addEventListener('click', () => goTab(b.dataset.tab));
+  });
 
   // ---------- helpers ----------
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -96,6 +134,73 @@
     return res.json();
   }
 
+  // ---------- share (native Android sheet via the app bridge -> Web Share API -> copy to clipboard) ----------
+  const SITE_URL = 'https://ainews.swansi.site/';
+  const VIA = 'via AI Daily ' + SITE_URL;
+  const SHARE_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 15.2c-1 0-1.9.4-2.5 1.1l-6.1-3.5c.1-.3.1-.5.1-.8s0-.5-.1-.8L15 7.7c.6.7 1.5 1.1 2.5 1.1 1.9 0 3.4-1.5 3.4-3.4S19.4 2 17.5 2 14.1 3.5 14.1 5.4c0 .3 0 .5.1.8L8.1 9.7C7.5 9 6.6 8.6 5.6 8.6 3.7 8.6 2.2 10.1 2.2 12s1.5 3.4 3.4 3.4c1 0 1.9-.4 2.5-1.1l6.1 3.5c-.1.3-.1.5-.1.8 0 1.9 1.5 3.4 3.4 3.4s3.4-1.5 3.4-3.4-1.5-3.4-3.4-3.4Z"/></svg>';
+  function clip(s, n) {
+    s = String(s || '').replace(/\s+/g, ' ').trim();
+    if (s.length <= n) return s;
+    const cut = s.slice(0, n), sp = cut.lastIndexOf(' ');
+    return (sp > n * 0.6 ? cut.slice(0, sp) : cut).replace(/[\s,;:.\-–—]+$/, '') + '…';
+  }
+  const httpUrl = u => (/^https?:\/\/[^\s]+$/i.test(u || '') ? String(u) : '');
+  /** Share payload for one story: title, short summary + "via AI Daily", article URL. */
+  function storyShare(title, summary, url) {
+    return { title: clip(title, 200), text: [clip(summary, 280), VIA].filter(Boolean).join('\n\n'), url: httpUrl(url) };
+  }
+  const shareAttrs = p => `data-share-title="${esc(p.title)}" data-share-text="${esc(p.text)}" data-share-url="${esc(p.url)}"`;
+  const shareBtn = (p, label) => `<button type="button" class="share-btn" ${shareAttrs(p)} aria-label="${esc(label)}" title="Share">${SHARE_ICON}</button>`;
+  const plainShare = p => [p.title, p.url].filter(Boolean).join('\n') + (p.text ? '\n\n' + p.text : '');
+
+  let toastT = 0;
+  function toast(msg) {
+    const t = $('#toast'); if (!t) return;
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+  async function copyText(text) {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch (e) { /* fall through */ }
+    try { // older Android WebViews: no async clipboard API (or permission denied)
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      const ok = document.execCommand('copy'); ta.remove(); return ok;
+    } catch (e) { return false; }
+  }
+  /** 1) AI Daily Android app bridge (v1.4+)  2) Web Share API  3) copy title + link + summary and say so. */
+  async function share(p) {
+    const br = window.AIDailyAndroid;
+    if (br && typeof br.share === 'function') {
+      try { if (br.share(p.title, p.text, p.url) !== false) return 'native'; } catch (e) { /* fall back */ }
+    }
+    if (typeof navigator.share === 'function') {
+      const data = { title: p.title, text: p.title + '\n\n' + p.text };
+      if (p.url) data.url = p.url;
+      if (!navigator.canShare || navigator.canShare(data)) {
+        try { await navigator.share(data); return 'web'; } catch (e) { if (e && e.name === 'AbortError') return 'cancelled'; }
+      }
+    }
+    if (await copyText(plainShare(p))) { toast('Link copied'); return 'copied'; }
+    toast("Couldn't copy the link"); return 'failed';
+  }
+  // One capture-phase handler for every share button: it runs before the card / list handlers and stops the click there,
+  // so sharing never toggles a summary, applies a filter or follows a link.
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-share-title]');
+    if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    share({ title: b.dataset.shareTitle || '', text: b.dataset.shareText || '', url: b.dataset.shareUrl || '' });
+  }, true);
+  // Android app: while a touch starts inside a scrolled inner box (Just in), ask the wrapper not to pull-to-refresh.
+  (function () {
+    let blocked = false;
+    const set = v => { const br = window.AIDailyAndroid; if (v !== blocked && br && typeof br.setRefreshBlocked === 'function') { blocked = v; try { br.setRefreshBlocked(v); } catch (e) {} } };
+    document.addEventListener('touchstart', e => { const l = e.target.closest && e.target.closest('.ji-box.scrolls .ji-list'); set(!!l && l.scrollTop > 0); }, { passive: true, capture: true });
+    document.addEventListener('touchend', () => set(false), { passive: true, capture: true });
+    document.addEventListener('touchcancel', () => set(false), { passive: true, capture: true });
+  })();
+
   // ---------- theme ----------
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
@@ -123,8 +228,13 @@
       latest = idx.latest || state.dates[0];
     } catch (e) { /* fall back to latest.json only */ }
 
-    const hashDate = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
-    const want = hashDate && state.dates.includes(hashDate) ? hashDate : null;
+    const h0 = hashInfo();
+    const want = h0.date && state.dates.includes(h0.date) ? h0.date : null;
+    if (h0.reels) {
+      // Deep link to #reels: put a News entry underneath so Back (incl. the Android back button) returns to News.
+      history.replaceState(null, '', '#' + (want || ''));
+      history.pushState({ aidailyReels: 1 }, '', '#reels' + (want ? '/' + want : ''));
+    }
     renderDateSelect();
     await loadEdition(want || latest || null);
   }
@@ -142,7 +252,7 @@
       state.edition = ed; state.date = ed.date;
       if (!state.dates.includes(ed.date)) { state.dates.unshift(ed.date); state.dates.sort().reverse(); renderDateSelect(); }
       els.dateSelect.value = ed.date;
-      if (location.hash.replace('#', '') !== ed.date) history.replaceState(null, '', '#' + ed.date);
+      setHash(ed.date);
       updateNav();
       renderEdition();
     } catch (e) {
@@ -151,7 +261,7 @@
         // Keep showing the edition that is already on screen, and put the picker/URL back to match it
         // (otherwise the header says e.g. "Sat, 26 Sept" while the page still shows the 29th).
         els.dateSelect.value = state.date;
-        if (location.hash.replace('#', '') !== state.date) history.replaceState(null, '', '#' + state.date);
+        setHash(state.date);
         updateNav();
         els.error.textContent = (navigator.onLine === false
           ? "You're offline and the " + fmtShortDate(date) + " edition isn't saved on this device yet."
@@ -177,9 +287,13 @@
   els.next.addEventListener('click', () => { const i = state.dates.indexOf(state.date); if (i > 0) loadEdition(state.dates[i - 1]); });
   els.dateSelect.addEventListener('change', () => loadEdition(els.dateSelect.value));
   window.addEventListener('hashchange', () => {
-    const d = location.hash.replace('#', '');
-    if (d && d !== state.date && state.dates.includes(d)) loadEdition(d);
-    else if (state.date && d !== state.date) history.replaceState(null, '', '#' + state.date); // no edition for that date: keep URL = what's shown
+    const h = hashInfo();
+    // Back from Reels (or a hand-edited #reels) switches the tab to match the URL.
+    if (h.reels && curTab() !== 'reels') setTab('reels', false);
+    else if (!h.reels && curTab() === 'reels') setTab(pendingTab || 'news', !!pendingTab);
+    pendingTab = null;
+    if (h.date && h.date !== state.date && state.dates.includes(h.date)) loadEdition(h.date);
+    else if (state.date) setHash(state.date); // no edition for that date: keep URL = what's shown
   });
 
   // ---------- render ----------
@@ -188,6 +302,14 @@
     const items = ed.items || [];
     els.editionDate.textContent = fmtEditionDate(ed.date) + (state.dates[0] === ed.date ? ' · Latest' : '');
     els.highlights.innerHTML = (ed.highlights || []).map(h => `<li>${esc(h)}</li>`).join('');
+    const sb = $('#shareEdition');
+    if (sb) {
+      const p = { title: `AI Daily · ${fmtShortDate(ed.date)}: today in 60 seconds`,
+        text: (ed.highlights || []).slice(0, 4).map(h => '• ' + clip(h, 200)).join('\n'), url: SITE_URL + '#' + ed.date };
+      sb.dataset.shareTitle = p.title; sb.dataset.shareText = p.text; sb.dataset.shareUrl = p.url;
+      if (!sb.firstChild) sb.innerHTML = SHARE_ICON;
+      sb.hidden = false;
+    }
     const major = items.filter(i => i.importance === 'Major').length;
     const vids = items.filter(i => i.video_url).length;
     const cats = new Set(items.map(i => i.category)).size;
@@ -243,7 +365,7 @@
     return `<article class="card ${imp === 'Major' ? 'is-major' : ''}" style="--c:${c}" id="${esc(item.id)}">
       ${thumb}
       <div class="card-body">
-        <div class="badges"><button class="cat" data-cat="${esc(item.category)}">${esc(item.category)}</button><span class="imp ${imp.toLowerCase()}">${esc(imp)}</span></div>
+        <div class="badges"><button class="cat" data-cat="${esc(item.category)}">${esc(item.category)}</button><span class="imp ${imp.toLowerCase()}">${esc(imp)}</span>${shareBtn(storyShare(item.headline, item.summary, item.source_url), 'Share: ' + item.headline)}</div>
         <h2><a href="${esc(safeUrl(item.source_url))}" target="_blank" rel="noopener">${esc(item.headline)}</a></h2>
         ${item.summary ? `<p class="summary">${esc(item.summary)}</p>` : ''}
         ${tags ? `<div class="tags">${tags}</div>` : ''}
@@ -254,19 +376,24 @@
       </div></article>`;
   }
 
-  function renderFeed() {
+  const isFiltered = () => !!(state.category || state.majorOnly || state.videosOnly || state.q);
+  function feedItems() {
     // Major first, then Notable, then Minor; within a tier keep the editor's order from the JSON.
-    const all = state.edition.items || [];
+    const all = (state.edition && state.edition.items) || [];
     const order = new Map(all.map((it, i) => [it, i]));
-    const items = all.filter(matches).sort((a, b) =>
+    return all.filter(matches).sort((a, b) =>
       (IMP_RANK[a.importance] ?? 3) - (IMP_RANK[b.importance] ?? 3) || order.get(a) - order.get(b));
+  }
+  function renderFeed() {
+    const items = feedItems();
     els.feed.innerHTML = items.map(cardHTML).join('');
     const total = (state.edition.items || []).length;
-    const filtered = state.category || state.majorOnly || state.videosOnly || state.q;
+    const filtered = isFiltered();
     els.count.textContent = filtered ? `Showing ${items.length} of ${total} stories` : `${total} stories · biggest first`;
     els.empty.hidden = items.length > 0;
     els.reset.hidden = !filtered;
     if (typeof updateFab === 'function') updateFab();
+    if (reelsApi) reelsApi.update();
   }
 
   els.feed.addEventListener('click', e => {
@@ -377,7 +504,7 @@
           ${SHORT_CAT[it.category] ? `<span class="ji-cat" style="--c:${c}" title="${esc(it.category)}">${esc(SHORT_CAT[it.category])}</span>` : ''}
           <a class="ji-src" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener" tabindex="-1">${esc(it.source || 'Source')}</a>
           <span class="sep" aria-hidden="true">·</span><time datetime="${esc(it.published_at)}" title="${esc(fmtPublished(it.published_at))}">${esc(ago(it.published_at))}</time></div>
-        <div class="ji-row"><a class="ji-title" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a>${sum}</div>
+        <div class="ji-row"><a class="ji-title" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a>${sum}${shareBtn(storyShare(it.title, it.summary, it.url), 'Share: ' + it.title)}</div>
         ${it.summary ? `<p class="ji-sum" hidden>${esc(it.summary)}</p>` : ''}
       </li>`;
     }
@@ -424,6 +551,7 @@
       fit();
       JI.list.scrollTop = top; // a periodic refresh must not yank the box back to the top while you read
       updateFade();
+      if (reelsApi) reelsApi.update();
     }
 
     async function refresh() {
@@ -468,8 +596,128 @@
       onEdition() {
         if (!started) { started = true; refresh(); } else render();
       },
+      items: () => (JI.data && isLatest() ? visibleItems() : []),
+      ago,
     };
   })();
+
+  // ---------- Reels: the same stories as full-screen vertical cards ----------
+  // The document itself scrolls (scroll-snap on <html>), not an inner box: keyboard/screen readers work as usual and the
+  // Android app's pull-to-refresh only engages on the first card (it checks the page's scroll position).
+  reelsApi = (function () {
+    const R = { list: $('#reelList'), empty: $('#reelEmpty'), emptyText: $('#reelEmptyText'), reset: $('#reelReset'), dirty: true, key: '', idx: 0 };
+    if (!R.list) return { open() {}, update() {}, go() {} };
+    const ICON = {
+      open: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg>',
+      play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.1v13.8c0 .8.9 1.3 1.6.9l10.6-6.9c.6-.4.6-1.3 0-1.7L9.6 4.2C8.9 3.8 8 4.3 8 5.1Z"/></svg>',
+    };
+    const cards = () => R.list.children;
+    function items() {
+      const ed = feedItems().map(it => ({ ji: false, it }));
+      return isFiltered() ? ed : ed.concat(justIn.items().map(it => ({ ji: true, it })));
+    }
+    function reelHTML(x, i, n, edLabel) {
+      const it = x.it;
+      const title = x.ji ? it.title : it.headline, url = x.ji ? it.url : it.source_url, src = x.ji ? it.source : it.source_name;
+      const when = x.ji ? justIn.ago(it.published_at) : (timeAgo(it.published_at) || fmtPublished(it.published_at));
+      const cat = it.category || 'Other', c = CAT_COLOR[cat] || CAT_COLOR.Other;
+      const imp = !x.ji && it.importance && it.importance !== 'Minor' ? it.importance : '';
+      const yt = !x.ji && youtubeId(it.video_url);
+      const img = httpUrl(it.image_url) || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : '');
+      const video = !x.ji ? httpUrl(it.video_url) : '';
+      const href = esc(safeUrl(url));
+      return `<article class="reel${img ? ' has-img' : ''}" style="--c:${c}" data-i="${i}" aria-roledescription="reel" aria-label="${esc(`Story ${i + 1} of ${n}`)}">
+        ${img ? `<div class="reel-bg" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async"></div>` : ''}
+        <div class="reel-frame">
+          <div class="reel-top"><span class="reel-brand">${x.ji ? 'Just in' : esc(edLabel)}</span><span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></div>
+          ${img ? `<a class="reel-media" href="${esc(video || safeUrl(url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async">${video ? '<span class="play"><span></span></span>' : ''}</a>` : ''}
+          <div class="reel-main">
+            <div class="reel-text">
+              <div class="reel-badges"><span class="reel-cat">${esc(cat)}</span>${imp ? `<span class="imp ${imp.toLowerCase()}">${esc(imp)}</span>` : ''}${x.ji ? '<span class="reel-ji">Just in</span>' : ''}</div>
+              <h2 class="reel-title"><a href="${href}" target="_blank" rel="noopener">${esc(title)}</a></h2>
+              ${it.summary ? `<p class="reel-sum">${esc(it.summary)}</p>` : ''}
+              <p class="reel-meta">${esc(src || 'Source')}${when ? ' · ' + esc(when) : ''}</p>
+            </div>
+            <div class="reel-actions">
+              <button type="button" class="reel-act" ${shareAttrs(storyShare(title, it.summary, url))} aria-label="${esc('Share: ' + title)}">${SHARE_ICON}<span>Share</span></button>
+              <a class="reel-act" href="${href}" target="_blank" rel="noopener" aria-label="${esc('Open article: ' + title)}">${ICON.open}<span>Open</span></a>
+              ${video ? `<a class="reel-act play" href="${esc(video)}" target="_blank" rel="noopener" aria-label="${esc('Play video: ' + title)}">${ICON.play}<span>Play</span></a>` : ''}
+            </div>
+          </div>
+        </div>
+      </article>`;
+    }
+    function render() {
+      const list = items(), n = list.length;
+      const edLabel = 'AI Daily' + (state.date ? ' · ' + fmtShortDate(state.date) : '') + (isFiltered() ? ' · filtered' : '');
+      R.list.innerHTML = list.map((x, i) => reelHTML(x, i, n, edLabel)).join('');
+      R.empty.hidden = n > 0;
+      if (!n) {
+        R.emptyText.textContent = !state.edition ? 'Loading stories…' : isFiltered() ? 'No stories match your filters.' : 'No stories in this edition.';
+        R.reset.hidden = !isFiltered();
+      }
+      R.dirty = false;
+    }
+    function current() {
+      const cs = cards(); if (!cs.length) return 0;
+      const h = cs[0].offsetHeight || window.innerHeight;
+      return Math.max(0, Math.min(cs.length - 1, Math.round((window.scrollY - cs[0].offsetTop) / h)));
+    }
+    function go(i, smooth) {
+      const cs = cards(); if (!cs.length) { window.scrollTo(0, 0); return; }
+      R.idx = Math.max(0, Math.min(cs.length - 1, i));
+      window.scrollTo({ top: cs[R.idx].offsetTop, behavior: smooth ? 'smooth' : 'auto' });
+    }
+    function update() {
+      const key = state.date + '|' + isFiltered();
+      if (key !== R.key) { R.key = key; R.idx = 0; }
+      R.dirty = true;
+      if (curTab() === 'reels') { const i = R.idx; render(); go(i, false); }
+    }
+    function open() {
+      if (R.dirty) render();
+      const i = R.idx;
+      go(i, false); requestAnimationFrame(() => go(i, false)); // again after layout (first open / fonts)
+    }
+    let raf = 0;
+    window.addEventListener('scroll', () => {
+      if (curTab() !== 'reels' || raf) return;
+      raf = requestAnimationFrame(() => { raf = 0; R.idx = current(); });
+    }, { passive: true });
+    document.addEventListener('keydown', e => {
+      if (curTab() !== 'reels' || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target.closest && e.target.closest('input,select,textarea')) return;
+      const k = e.key, i = current();
+      if (k === ' ' && e.target.closest && e.target.closest('button,a')) return; // Space activates the focused action
+      if (k === 'ArrowDown' || k === 'PageDown' || k === 'j' || (k === ' ' && !e.shiftKey)) go(i + 1, true);
+      else if (k === 'ArrowUp' || k === 'PageUp' || k === 'k' || (k === ' ' && e.shiftKey)) go(i - 1, true);
+      else if (k === 'Home') go(0, false); // long jumps: no smooth animation through dozens of cards
+      else if (k === 'End') go(cards().length - 1, false);
+      else if (k === 'Escape') goTab('news');
+      else return;
+      e.preventDefault();
+    });
+    // Mouse wheel / trackpad on desktop: one card per gesture (a single wheel notch would otherwise snap back).
+    let wheelLock = 0;
+    window.addEventListener('wheel', e => {
+      if (curTab() !== 'reels' || e.ctrlKey || Math.abs(e.deltaY) < 4 || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      const now = Date.now(); if (now < wheelLock) return;
+      wheelLock = now + 600;
+      go(current() + (e.deltaY > 0 ? 1 : -1), true);
+    }, { passive: false });
+    // Thumbnails that fail (offline, removed video): fall back to the gradient card.
+    R.list.addEventListener('error', e => {
+      if (e.target.tagName !== 'IMG') return;
+      const reel = e.target.closest('.reel'); if (!reel) return;
+      reel.classList.remove('has-img');
+      reel.querySelectorAll('.reel-bg,.reel-media').forEach(n => n.remove());
+    }, true);
+    R.reset.addEventListener('click', () => { resetFilters(); });
+    window.addEventListener('resize', () => { if (curTab() === 'reels') go(R.idx, false); });
+    return { open, update, go };
+  })();
+  if (curTab() === 'reels') reelsApi.open();
 
   // PWA service worker (only when served over http/https)
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {

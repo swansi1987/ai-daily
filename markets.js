@@ -309,15 +309,8 @@
   }
 
   // ---------- tabs ----------
-  function setTab(tab, save) {
-    root.setAttribute('data-tab', tab);
-    document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
-    if (save) { try { localStorage.setItem('aidaily-tab', tab); } catch (e) {} }
-    if (tab === 'markets') openMarkets();
-  }
-  document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
-    if (root.getAttribute('data-tab') !== b.dataset.tab) { setTab(b.dataset.tab, true); window.scrollTo(0, 0); }
-  }));
+  // app.js owns the tab bar (News | Reels | Markets) and announces switches; open Markets when it is shown.
+  document.addEventListener('aidaily:tab', e => { if (e.detail && e.detail.tab === 'markets') openMarkets(); });
 
   els.sync.addEventListener('click', () => sync());
   async function goDate(d) {
@@ -335,5 +328,5 @@
     if (document.visibilityState === 'visible' && root.getAttribute('data-tab') === 'markets' && st.loaded && st.isLatest && Date.now() - st.lastSync > 5 * 60 * 1000) sync();
   });
 
-  setTab(root.getAttribute('data-tab') === 'markets' ? 'markets' : 'news', false);
+  if (root.getAttribute('data-tab') === 'markets') openMarkets();
 })();

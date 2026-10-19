@@ -18,8 +18,8 @@
   <script>
     // Apply saved theme before paint to avoid a flash.
     try { var t = localStorage.getItem('aidaily-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
-    // Restore the last-used tab (News | Markets) before paint.
-    try { document.documentElement.setAttribute('data-tab', localStorage.getItem('aidaily-tab') === 'markets' ? 'markets' : 'news'); } catch (e) { document.documentElement.setAttribute('data-tab', 'news'); }
+    // Tab before paint: a #reels deep link opens Reels; otherwise restore the last-used tab (News | Markets).
+    try { document.documentElement.setAttribute('data-tab', /^#reels\b/.test(location.hash) ? 'reels' : localStorage.getItem('aidaily-tab') === 'markets' ? 'markets' : 'news'); } catch (e) { document.documentElement.setAttribute('data-tab', 'news'); }
   </script>
 </head>
 <body>
@@ -38,10 +38,6 @@
         <span class="theme-icon" aria-hidden="true"></span>
       </button>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Sections">
-      <button class="tab" role="tab" id="tab-news" data-tab="news" aria-controls="newsView" aria-selected="true">News</button>
-      <button class="tab" role="tab" id="tab-markets" data-tab="markets" aria-controls="marketsView" aria-selected="false">Markets</button>
-    </nav>
   </header>
 
   <main class="container">
@@ -58,6 +54,7 @@
       <p class="ji-empty" id="jiEmpty" hidden>No new AI stories in the last few hours. The next scan runs within about 30 minutes.</p>
     </section>
     <section class="hero" aria-labelledby="editionTitle">
+      <button type="button" class="share-btn hero-share" id="shareEdition" aria-label="Share today's edition" title="Share" hidden></button>
       <p class="eyebrow" id="editionDate">&nbsp;</p>
       <h1 id="editionTitle">Today in 60 seconds</h1>
       <ul class="highlights" id="highlights"><li class="skeleton-line"></li><li class="skeleton-line"></li><li class="skeleton-line"></li></ul>
@@ -92,6 +89,14 @@
     </section>
    </div>
 
+   <div id="reelsView" class="view" role="tabpanel" aria-labelledby="tab-reels">
+    <div class="reels" id="reelList"></div>
+    <div class="reel-empty" id="reelEmpty" hidden>
+      <p id="reelEmptyText">No stories to show.</p>
+      <button type="button" class="btn" id="reelReset">Clear filters</button>
+    </div>
+   </div>
+
    <div id="marketsView" class="view" role="tabpanel" aria-labelledby="tab-markets">
     <section class="hero mkt-hero" aria-labelledby="mktTitle">
       <div class="mkt-hero-top">
@@ -124,6 +129,19 @@
     <p><span data-app-name>AI Daily</span> · Every story links to its original source. Videos are only attached when verified.</p>
     <p class="muted" id="generatedAt"></p>
   </footer>
+
+  <nav class="bottomnav" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-news" data-tab="news" aria-controls="newsView" aria-selected="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h12.5V18a1.5 1.5 0 0 0 1.5 1.5H6.5A2.5 2.5 0 0 1 4 17V5.5Z"/><path d="M16.5 9H20v9a1.5 1.5 0 0 1-3 0"/><path d="M7.5 9.5h5.5M7.5 13h5.5M7.5 16.5h3.5"/></svg>
+      <span>News</span></button>
+    <button class="tab" role="tab" id="tab-reels" data-tab="reels" aria-controls="reelsView" aria-selected="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M3.5 8.5h17M8.5 3.7l2.6 4.6M14 3.7l2.6 4.6"/><path class="fill" d="M10.2 11.6v5.3a.4.4 0 0 0 .6.3l4.4-2.6a.4.4 0 0 0 0-.7l-4.4-2.6a.4.4 0 0 0-.6.3Z"/></svg>
+      <span>Reels</span></button>
+    <button class="tab" role="tab" id="tab-markets" data-tab="markets" aria-controls="marketsView" aria-selected="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5v15h16"/><path d="M7.5 15l3.5-4 3 2.5 5-6.5"/><path d="M15.5 7h3.5v3.5"/></svg>
+      <span>Markets</span></button>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
   <script src="markets.js"></script>
