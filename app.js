@@ -201,6 +201,15 @@
     document.addEventListener('touchcancel', () => set(false), { passive: true, capture: true });
   })();
 
+  // ---------- auto-scroll (Reels + Just in): shared settings ----------
+  // Every 10 s, unless the user interacted in the last 5 s. Off with prefers-reduced-motion; the pause/play choice is remembered.
+  const AUTO_MS = 10000, IDLE_MS = 5000;
+  const reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  const autoPref = key => { try { return localStorage.getItem(key) !== '0'; } catch (e) { return true; } };
+  const saveAutoPref = (key, on) => { try { localStorage.setItem(key, on ? '1' : '0'); } catch (e) {} };
+  const PAUSE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
+  const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
+
   // ---------- theme ----------
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
@@ -450,6 +459,8 @@
       KEY: 'aidaily-justin-visit',
     };
     if (!JI.el) return { onEdition() {} };
+    // auto-scroll state (used by fit() below, so declared first)
+    const JA = { key: 'aidaily-justin-auto', on: autoPref('aidaily-justin-auto'), hold: 0, elapsed: 0, last: Date.now(), vis: false, progUntil: 0, btn: $('#jiAuto') };
     const normUrl = u => String(u || '').replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
     const isLatest = () => !!state.edition && state.dates[0] === state.date;
     const newsTab = () => document.documentElement.getAttribute('data-tab') !== 'markets';
@@ -526,6 +537,7 @@
       JI.fitW = w;
       const scrolls = lis.length > JI.SHOW;
       JI.box.classList.toggle('scrolls', scrolls);
+      jaSync();
       if (!scrolls) { JI.list.style.maxHeight = ''; JI.list.removeAttribute('tabindex'); updateFade(); return; }
       const last = lis[JI.SHOW - 1];
       // + PEEK px: just the 4th item's top padding (no text), so the bottom fade sits below the 3rd item's text.
@@ -582,6 +594,50 @@
       updateFade();
     });
     JI.list.addEventListener('scroll', updateFade, { passive: true });
+
+    // Auto-scroll: one story down every 10 s (smooth, inside the box only: never the page), back to the top at the end.
+    // Paused while you touch/scroll/use the box, while a summary is open, when the box is off-screen or the page hidden.
+    function jaSync() {
+      const b = JA.btn; if (!b) return;
+      b.hidden = reducedMotion.matches || !JI.box.classList.contains('scrolls');
+      b.classList.toggle('off', !JA.on);
+      b.setAttribute('aria-pressed', String(!JA.on));
+      b.setAttribute('aria-label', JA.on ? 'Pause auto-scroll' : 'Resume auto-scroll');
+      b.title = JA.on ? 'Auto-scroll on (every 10 s) – tap to pause' : 'Auto-scroll paused – tap to resume';
+    }
+    function jaActive() {
+      return JA.on && !reducedMotion.matches && JA.vis && !JI.el.hidden && JI.box.classList.contains('scrolls') &&
+        curTab() === 'news' && document.visibilityState === 'visible' && !JI.list.querySelector('.ji-sum:not([hidden])');
+    }
+    function jaStep() {
+      const l = JI.list, max = l.scrollHeight - l.clientHeight;
+      let top;
+      if (l.scrollTop >= max - 2) top = 0; // at the end: back to the newest
+      else {
+        const next = [...l.children].find(li => li.offsetTop > l.scrollTop + 2);
+        top = next ? Math.min(next.offsetTop, max) : 0;
+      }
+      JA.progUntil = Date.now() + 1200;
+      l.scrollTo({ top, behavior: 'smooth' }); // element scroll: the page itself does not move
+    }
+    function jaTick() {
+      const now = Date.now(), dt = Math.min(1000, now - JA.last); JA.last = now;
+      if (!jaActive() || now < JA.hold) return;
+      JA.elapsed += dt;
+      if (JA.elapsed >= AUTO_MS) { JA.elapsed = 0; jaStep(); }
+    }
+    const jaHold = () => { JA.hold = Date.now() + IDLE_MS; JA.elapsed = 0; };
+    ['touchstart', 'touchmove', 'wheel', 'pointerdown', 'keydown', 'focusin'].forEach(t => JI.list.addEventListener(t, jaHold, { passive: true }));
+    JI.list.addEventListener('scroll', () => { if (Date.now() > JA.progUntil) jaHold(); }, { passive: true });
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(es => { es.forEach(e => { JA.vis = e.isIntersecting && e.intersectionRatio >= 0.5; }); }, { threshold: [0, 0.5, 1] }).observe(JI.box);
+    } else JA.vis = true;
+    if (JA.btn) JA.btn.addEventListener('click', () => {
+      JA.on = !JA.on; saveAutoPref(JA.key, JA.on); JA.hold = 0; JA.elapsed = 0; jaSync();
+    });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState !== 'visible') JA.elapsed = 0; });
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', jaSync);
+    setInterval(jaTick, 250);
     // Refit when the width changes (rotation, resize, becoming visible) or the theme/fonts change.
     if (window.ResizeObserver) new ResizeObserver(() => { if (JI.list.clientWidth !== JI.fitW) fit(); }).observe(JI.list);
     window.addEventListener('resize', fit, { passive: true });
@@ -620,6 +676,10 @@
       play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.1v13.8c0 .8.9 1.3 1.6.9l10.6-6.9c.6-.4.6-1.3 0-1.7L9.6 4.2C8.9 3.8 8 4.3 8 5.1Z"/></svg>',
     };
     const cards = () => R.list.children;
+    const RA = { key: 'aidaily-reels-auto', on: autoPref('aidaily-reels-auto'), hold: 0, elapsed: 0, last: 0, card: -1, iv: 0, progUntil: 0 };
+    const raActive = () => RA.on && !reducedMotion.matches && curTab() === 'reels' && document.visibilityState === 'visible' && cards().length > 1;
+    const raBar = (i, f) => { const c = cards()[i], b = c && c.querySelector('.reel-prog i'); if (b) b.style.transform = `scaleX(${Math.max(0, Math.min(1, f))})`; };
+    const autoBtn = () => `<button type="button" class="reel-auto" aria-pressed="${!RA.on}" aria-label="${RA.on ? 'Pause auto-scroll' : 'Resume auto-scroll'}">${PAUSE_SVG}${PLAY_SVG}</button>`;
     function items() {
       const ed = feedItems().map(it => ({ ji: false, it }));
       return isFiltered() ? ed : ed.concat(justIn.items().map(it => ({ ji: true, it })));
@@ -638,7 +698,8 @@
       return `<article class="reel${img ? ' has-img' : ''}" style="--c:${c}" data-i="${i}" aria-roledescription="reel" aria-label="${esc(`Story ${i + 1} of ${n}`)}">
         ${img ? `<div class="reel-bg" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>` : ''}
         <div class="reel-frame">
-          <div class="reel-top"><span class="reel-brand">${x.ji ? 'Just in' : esc(edLabel)}</span><span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></div>
+          <div class="reel-prog" aria-hidden="true"><i></i></div>
+          <div class="reel-top"><span class="reel-brand">${x.ji ? 'Just in' : esc(edLabel)}</span><span class="reel-top-r">${autoBtn()}<span class="reel-count" aria-hidden="true">${i + 1} / ${n}</span></span></div>
           ${img ? `<a class="reel-media" href="${esc(video || safeUrl(url))}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${video ? '<span class="play"><span></span></span>' : ''}</a>` : ''}
           <div class="reel-main">
             <div class="reel-text">
@@ -673,6 +734,7 @@
       return Math.max(0, Math.min(cs.length - 1, Math.round((window.scrollY - cs[0].offsetTop) / h)));
     }
     function go(i, smooth) {
+      RA.progUntil = Date.now() + (smooth ? 1500 : 300); // our own scrolling is not a user interaction
       const cs = cards(); if (!cs.length) { window.scrollTo(0, 0); return; }
       R.idx = Math.max(0, Math.min(cs.length - 1, i));
       window.scrollTo({ top: cs[R.idx].offsetTop, behavior: smooth ? 'smooth' : 'auto' });
@@ -725,9 +787,53 @@
     R.list.addEventListener('load', e => { const t = e.target; if (t.tagName === 'IMG' && t.naturalWidth < 40) dropImg(t); }, true);
     R.reset.addEventListener('click', () => { resetFilters(); });
     window.addEventListener('resize', () => { if (curTab() === 'reels') go(R.idx, false); });
-    return { open, update, go };
+
+    // Auto-advance: next card every 10 s with a story-style progress bar; stops at the last card (no loop).
+    // Any touch / wheel / key / scroll / tap pauses it; it resumes 5 s after the last interaction.
+    function raTick() {
+      const now = Date.now(), dt = Math.min(1000, now - RA.last); RA.last = now;
+      if (!raActive()) { raStop(); return; }
+      if (now < RA.progUntil) return; // still gliding to a card
+      const cs = cards(), i = current();
+      if (i !== RA.card) { raBar(RA.card, 0); RA.card = i; RA.elapsed = 0; }
+      if (now < RA.hold || i >= cs.length - 1) { RA.elapsed = 0; raBar(i, 0); return; }
+      RA.elapsed += dt;
+      raBar(i, RA.elapsed / AUTO_MS);
+      if (RA.elapsed >= AUTO_MS) { raBar(i, 0); RA.elapsed = 0; RA.card = i + 1; go(i + 1, true); }
+    }
+    function raStart() {
+      if (RA.iv || !raActive()) return;
+      RA.last = Date.now(); RA.iv = setInterval(raTick, 100);
+    }
+    function raStop() {
+      if (RA.iv) { clearInterval(RA.iv); RA.iv = 0; }
+      raBar(RA.card, 0); RA.elapsed = 0;
+    }
+    function raSync() {
+      R.list.classList.toggle('auto-off', !RA.on || reducedMotion.matches);
+      R.list.classList.toggle('auto-none', reducedMotion.matches);
+      R.list.querySelectorAll('.reel-auto').forEach(b => {
+        b.setAttribute('aria-pressed', String(!RA.on)); b.setAttribute('aria-label', RA.on ? 'Pause auto-scroll' : 'Resume auto-scroll');
+      });
+    }
+    const raHold = () => { RA.hold = Date.now() + IDLE_MS; RA.elapsed = 0; };
+    ['touchstart', 'touchmove', 'wheel', 'pointerdown', 'keydown'].forEach(t =>
+      window.addEventListener(t, () => { if (curTab() === 'reels') raHold(); }, { passive: true, capture: true }));
+    window.addEventListener('scroll', () => { if (curTab() === 'reels' && Date.now() > RA.progUntil) raHold(); }, { passive: true });
+    R.list.addEventListener('click', e => {
+      const b = e.target.closest('.reel-auto'); if (!b) return;
+      e.preventDefault();
+      RA.on = !RA.on; saveAutoPref(RA.key, RA.on);
+      RA.hold = 0; RA.elapsed = 0; raSync();
+      if (RA.on) raStart(); else raStop();
+    });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') raStart(); else raStop(); });
+    document.addEventListener('aidaily:tab', e => { if (e.detail.tab === 'reels') { RA.hold = 0; RA.card = -1; raSync(); raStart(); } else raStop(); });
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', () => { raSync(); raStart(); });
+    raSync();
+    return { open, update, go, autoStart: raStart };
   })();
-  if (curTab() === 'reels') reelsApi.open();
+  if (curTab() === 'reels') { reelsApi.open(); reelsApi.autoStart(); }
 
   // PWA service worker (only when served over http/https)
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {

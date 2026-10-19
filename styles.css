@@ -382,4 +382,23 @@ html[data-tab="reels"]{scroll-snap-type:y mandatory}
 @media (max-height:700px){ .reel-title{-webkit-line-clamp:5;font-size:clamp(21px,6vw,28px)} .reel-sum{-webkit-line-clamp:4} .reel-media{max-height:24vh} }
 @media (max-height:560px){ .reel-sum{-webkit-line-clamp:2} .reel-media{display:none} }
 @media (min-width:720px){ .reel-frame{padding-left:24px;padding-right:20px} .reel-title{font-size:34px} }
-
+/* auto-scroll: story-style progress bar + pause/play toggles */
+.reel-frame{position:relative}
+.reel-prog{position:absolute;left:18px;right:12px;top:calc(5px + env(safe-area-inset-top));height:3px;border-radius:3px;background:rgba(255,255,255,.22);overflow:hidden;pointer-events:none}
+.reel-prog i{display:block;height:100%;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .1s linear}
+[data-theme="light"] .reel:not(.has-img) .reel-prog{background:rgba(18,21,33,.14)}
+.reels.auto-off .reel-prog{visibility:hidden}
+.reel-top-r{flex-shrink:0;display:flex;align-items:center;gap:8px}
+.reel-auto{width:32px;height:32px;padding:0;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--fg);background:var(--act-bg);border:1px solid var(--act-bd);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent}
+.reel-auto svg,.ji-auto svg{width:14px;height:14px;fill:currentColor}
+.reel-auto .i-play,.reels.auto-off .reel-auto .i-pause{display:none}
+.reels.auto-off .reel-auto .i-play{display:block}
+.reels.auto-none .reel-auto{display:none}
+.reel-auto:focus-visible,.ji-auto:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ji-head .ji-scanned{margin-left:auto}
+.ji-auto{width:28px;height:28px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-faint);cursor:pointer;align-self:center}
+.ji-auto:hover{color:var(--text);background:var(--card-hover)}
+.ji-auto[hidden]{display:none}
+.ji-auto .i-play,.ji-auto.off .i-pause{display:none}
+.ji-auto.off .i-play{display:block}
