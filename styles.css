@@ -199,7 +199,11 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 [data-theme="dark"][data-tab="reels"] .bottomnav .tab[aria-selected="true"],[data-theme="dark"][data-tab="reels"] .bottomnav .tab[aria-selected="true"] svg{color:#fff}
 .to-filters{bottom:calc(76px + env(safe-area-inset-bottom))}
 [data-tab="markets"] #newsView,[data-tab="reels"] #newsView,[data-tab="news"] #marketsView,[data-tab="reels"] #marketsView,
-[data-tab="news"] #reelsView,[data-tab="markets"] #reelsView{display:none}
+[data-tab="news"] #reelsView,[data-tab="markets"] #reelsView,
+[data-tab="saved"] #newsView,[data-tab="saved"] #reelsView,[data-tab="saved"] #marketsView,
+[data-tab="news"] #savedView,[data-tab="reels"] #savedView,[data-tab="markets"] #savedView{display:none}
+[data-tab="saved"] .topbar-inner>.datenav,[data-tab="saved"] .to-filters,[data-tab="saved"] .footer{display:none}
+[data-tab="saved"] #themeBtn{margin-left:auto}
 [data-tab="markets"] .topbar-inner>.datenav{display:none}
 [data-tab="markets"] #themeBtn{margin-left:auto}
 [data-tab="markets"] .to-filters{display:none}
@@ -402,3 +406,33 @@ html[data-tab="reels"]{scroll-snap-type:y mandatory}
 .ji-auto[hidden]{display:none}
 .ji-auto .i-play,.ji-auto.off .i-pause{display:none}
 .ji-auto.off .i-play{display:block}
+
+/* Save (bookmark) buttons + Saved tab */
+.save-btn{position:relative;flex-shrink:0;display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border-radius:12px;
+  border:1px solid transparent;background:transparent;color:var(--text-faint);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.save-btn svg{width:18px;height:18px}
+.save-btn:hover{color:var(--text);background:var(--card-hover);border-color:var(--border)}
+.save-btn:active{transform:scale(.94)}
+.save-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+[data-save] svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+[data-save][aria-pressed="true"] svg path{fill:currentColor}
+.save-btn[aria-pressed="true"]{color:var(--accent)}
+[data-theme="dark"] .save-btn[aria-pressed="true"]{color:#a48dff}
+.reel-act[data-save] svg path{stroke-width:2.2}
+.reel-act[data-save][aria-pressed="true"] svg{color:#ffd166}
+.card-acts{display:inline-flex;align-items:center;gap:0;margin:-9px -9px -9px auto}
+.badges .card-acts .share-btn{margin:0}
+.ji-row .save-btn{width:36px;height:36px;margin:-7px -4px -7px -2px}
+.ji-row .save-btn svg{width:16px;height:16px}
+.bottomnav .tab{position:relative;min-width:0}
+.tab-badge{position:absolute;top:4px;left:calc(50% + 7px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--accent);
+  color:#fff;font-size:10px;font-weight:800;line-height:16px;text-align:center}
+.saved-hero h1{margin-bottom:4px}
+.saved-hero .result-count{margin:0}
+.saved-ji{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:6px;background:var(--major);color:#fff}
+.saved-card .cat{cursor:default}
+.saved-acts{margin-top:10px}
+.saved-acts .btn{background:transparent;cursor:pointer;font-family:inherit}
+.saved-rm{color:var(--text-dim)}
+.saved-empty svg{width:40px;height:40px;fill:none;stroke:currentColor;stroke-width:1.6;opacity:.6}
+@media (max-height:700px){.reel-actions{gap:8px}.reel-act svg{width:44px;height:44px;padding:11px}}

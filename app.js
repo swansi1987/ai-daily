@@ -151,6 +151,48 @@
   }
   const shareAttrs = p => `data-share-title="${esc(p.title)}" data-share-text="${esc(p.text)}" data-share-url="${esc(p.url)}"`;
   const shareBtn = (p, label) => `<button type="button" class="share-btn" ${shareAttrs(p)} aria-label="${esc(label)}" title="Share">${SHARE_ICON}</button>`;
+  // ---------- Saved (bookmarks): full story objects in localStorage, newest-saved first; synced across tabs/windows ----------
+  const SAVE_KEY = 'aidaily-saved';
+  const SAVE_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="bm" d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4.2-6.5 4.2v-16a1 1 0 0 1 1-1Z"/></svg>';
+  const saveKey = url => 'u:' + String(url || '').replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+  const saved = {
+    list() { try { const a = JSON.parse(localStorage.getItem(SAVE_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } },
+    write(a) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(a)); } catch (e) {} },
+    has(k) { return saved.list().some(x => x.k === k); },
+    toggle(story) {
+      const a = saved.list(), i = a.findIndex(x => x.k === story.k);
+      if (i >= 0) a.splice(i, 1); else a.unshift(Object.assign({}, story, { saved_at: new Date().toISOString() }));
+      saved.write(a); return i < 0;
+    },
+  };
+  // story -> normalized object (edition item or Just in item)
+  function storyObj(it, ji) {
+    const url = ji ? it.url : it.source_url;
+    return { k: saveKey(url), ji: !!ji, title: ji ? it.title : it.headline, summary: it.summary || '', url, source: ji ? it.source : it.source_name,
+      image_url: it.image_url || '', video_url: ji ? '' : (it.video_url || ''), category: it.category || '', published_at: it.published_at || '',
+      edition: ji ? '' : (state.date || '') };
+  }
+  const saveData = o => `data-save="${esc(JSON.stringify(o))}" data-save-k="${esc(o.k)}"`;
+  const saveBtn = (o, cls) => { const on = saved.has(o.k);
+    return `<button type="button" class="${cls || 'save-btn'}" ${saveData(o)} aria-pressed="${on}" aria-label="${esc((on ? 'Remove from saved: ' : 'Save: ') + o.title)}" title="${on ? 'Saved' : 'Save'}">${SAVE_ICON}${cls === 'reel-act' ? `<span>${on ? 'Saved' : 'Save'}</span>` : ''}</button>`; };
+  function syncSaveBtns() {
+    const ks = new Set(saved.list().map(x => x.k));
+    document.querySelectorAll('[data-save-k]').forEach(b => {
+      const on = ks.has(b.dataset.saveK), t = (JSON.parse(b.dataset.save || '{}').title) || '';
+      b.setAttribute('aria-pressed', String(on)); b.title = on ? 'Saved' : 'Save';
+      b.setAttribute('aria-label', (on ? 'Remove from saved: ' : 'Save: ') + t);
+      const sp = b.querySelector('span'); if (sp) sp.textContent = on ? 'Saved' : 'Save';
+    });
+    if (typeof renderSaved === 'function') renderSaved();
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-save]');
+    if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    let o; try { o = JSON.parse(b.dataset.save); } catch (err) { return; }
+    const on = saved.toggle(o); syncSaveBtns(); toast(on ? 'Saved' : 'Removed');
+  }, true);
+  window.addEventListener('storage', e => { if (e.key === SAVE_KEY) syncSaveBtns(); });
   const plainShare = p => [p.title, p.url].filter(Boolean).join('\n') + (p.text ? '\n\n' + p.text : '');
 
   let toastT = 0;
@@ -378,7 +420,7 @@
     return `<article class="card ${imp === 'Major' ? 'is-major' : ''}" style="--c:${c}" id="${esc(item.id)}">
       ${thumb}
       <div class="card-body">
-        <div class="badges"><button class="cat" data-cat="${esc(item.category)}">${esc(item.category)}</button><span class="imp ${imp.toLowerCase()}">${esc(imp)}</span>${shareBtn(storyShare(item.headline, item.summary, item.source_url), 'Share: ' + item.headline)}</div>
+        <div class="badges"><button class="cat" data-cat="${esc(item.category)}">${esc(item.category)}</button><span class="imp ${imp.toLowerCase()}">${esc(imp)}</span><span class="card-acts">${saveBtn(storyObj(item, false))}${shareBtn(storyShare(item.headline, item.summary, item.source_url), 'Share: ' + item.headline)}</span></div>
         ${headHTML}
         ${item.summary ? `<p class="summary">${esc(item.summary)}</p>` : ''}
         ${tags ? `<div class="tags">${tags}</div>` : ''}
@@ -523,7 +565,7 @@
           ${SHORT_CAT[it.category] ? `<span class="ji-cat" style="--c:${c}" title="${esc(it.category)}">${esc(SHORT_CAT[it.category])}</span>` : ''}
           <a class="ji-src" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener" tabindex="-1">${esc(it.source || 'Source')}</a>
           <span class="sep" aria-hidden="true">·</span><time datetime="${esc(it.published_at)}" title="${esc(fmtPublished(it.published_at))}">${esc(ago(it.published_at))}</time></div>
-        <div class="ji-row"><a class="ji-title" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a>${sum}${shareBtn(storyShare(it.title, it.summary, it.url), 'Share: ' + it.title)}</div>
+        <div class="ji-row"><a class="ji-title" href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a>${sum}${saveBtn(storyObj(it, true))}${shareBtn(storyShare(it.title, it.summary, it.url), 'Share: ' + it.title)}</div>
         ${it.summary ? `<p class="ji-sum" hidden>${esc(it.summary)}</p>` : ''}
       </li>`;
     }
@@ -665,6 +707,42 @@
     };
   })();
 
+  // ---------- Saved tab ----------
+  function savedAgo(iso) { const t = Date.parse(iso); if (!t) return ''; const m = Math.round((Date.now() - t) / 60000);
+    return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' h ago' : Math.round(m / 1440) + ' d ago'; }
+  function savedHTML(o) {
+    const c = CAT_COLOR[o.category] || CAT_COLOR.Other, yt = youtubeId(o.video_url);
+    const pic = (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : '') || httpUrl(o.image_url), href = esc(safeUrl(o.url));
+    const head = `<h2><a href="${href}" target="_blank" rel="noopener">${esc(o.title)}</a></h2>`;
+    return `<article class="card saved-card" style="--c:${c}" data-k="${esc(o.k)}">
+      <div class="card-body">
+        <div class="badges">${o.category ? `<span class="cat">${esc(o.category)}</span>` : ''}${o.ji ? '<span class="saved-ji">Just in</span>' : ''}</div>
+        ${pic ? `<div class="card-head">${head}<a class="card-img" href="${href}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${esc(pic)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a></div>` : head}
+        ${o.summary ? `<p class="summary">${esc(o.summary)}</p>` : ''}
+        <div class="meta"><span class="src">${esc(o.source || 'Source')}</span>${o.published_at ? `<span class="sep">•</span><time datetime="${esc(o.published_at)}">${esc(fmtPublished(o.published_at))}</time>` : ''}
+          <span class="sep">•</span><span class="saved-at">Saved ${esc(savedAgo(o.saved_at))}</span></div>
+        <div class="actions saved-acts">
+          <a class="btn" href="${href}" target="_blank" rel="noopener" aria-label="${esc('Open article: ' + o.title)}">Open ↗</a>
+          <button type="button" class="btn" ${shareAttrs(storyShare(o.title, o.summary, o.url))} aria-label="${esc('Share: ' + o.title)}">Share</button>
+          <button type="button" class="btn saved-rm" ${saveData(o)} aria-label="${esc('Remove from saved: ' + o.title)}">Remove</button>
+        </div>
+      </div></article>`;
+  }
+  function renderSaved() {
+    const l = $('#savedList'); if (!l) return;
+    const a = saved.list();
+    l.innerHTML = a.map(savedHTML).join('');
+    $('#savedEmpty').hidden = a.length > 0;
+    $('#savedCount').textContent = a.length ? `${a.length} saved ${a.length === 1 ? 'story' : 'stories'} · newest first` : '';
+    const n = $('#savedBadge'); if (n) { n.textContent = a.length > 99 ? '99+' : String(a.length); n.hidden = !a.length; }
+  }
+  { const l = $('#savedList'); if (l) {
+    const drop = img => { const x = img.closest('.card-img'); if (x) x.remove(); };
+    l.addEventListener('error', e => { if (e.target.tagName === 'IMG') drop(e.target); }, true);
+    l.addEventListener('load', e => { if (e.target.tagName === 'IMG' && e.target.naturalWidth < 40) drop(e.target); }, true);
+  } }
+  renderSaved();
+
   // ---------- Reels: the same stories as full-screen vertical cards ----------
   // The document itself scrolls (scroll-snap on <html>), not an inner box: keyboard/screen readers work as usual and the
   // Android app's pull-to-refresh only engages on the first card (it checks the page's scroll position).
@@ -725,6 +803,7 @@
               <p class="reel-meta">${esc(src || 'Source')}${when ? ' · ' + esc(when) : ''}</p>
             </div>
             <div class="reel-actions">
+              ${saveBtn(storyObj(it, x.ji), 'reel-act')}
               <button type="button" class="reel-act" ${shareAttrs(storyShare(title, it.summary, url))} aria-label="${esc('Share: ' + title)}">${SHARE_ICON}<span>Share</span></button>
               <a class="reel-act" href="${href}" target="_blank" rel="noopener" aria-label="${esc('Open article: ' + title)}">${ICON.open}<span>Open</span></a>
               ${video ? `<a class="reel-act play" href="${esc(video)}" target="_blank" rel="noopener" aria-label="${esc('Play video: ' + title)}">${ICON.play}<span>Play</span></a>` : ''}
@@ -761,7 +840,7 @@
     ['touchend', 'touchcancel'].forEach(t => window.addEventListener(t, e => { touching = e.touches.length; lastUser = Date.now(); }, { passive: true, capture: true }));
     function update() {
       const key = state.date + '|' + isFiltered();
-      if (key !== R.key) { R.key = key; R.idx = 0; R.dirty = true; if (curTab() === 'reels') { render(); go(0, false); } return; }
+      if (key !== R.key) { R.key = key; R.idx = 0; R.dirty = true; if (curTab() === 'reels') { render(); go(0, false); raStart(); } return; }
       R.dirty = true;
       if (curTab() !== 'reels') return;
       // Keep the card you are on: re-anchor by story key. While you are scrolling, only refresh the "i / N" counters.
@@ -775,6 +854,7 @@
       // On the first card the newest story stays on top; anywhere else you stay on the story you were reading.
       const at0 = current() === 0, ni = !at0 && curK != null && pos.has(curK) ? pos.get(curK) : at0 ? 0 : Math.min(R.idx, list.length - 1);
       go(ni, false); RA.card = R.idx;
+      raStart(); // e.g. a #reels deep link: the stories arrive after the first (empty) tick stopped it
     }
     function open() {
       if (R.dirty) render();
